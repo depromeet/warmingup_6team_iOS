@@ -2,8 +2,8 @@
 //  ViewController.swift
 //  WePet
 //
-//  Created by 양혜리 on 12/10/2019.
-//  Copyright © 2019 Depromeet. All rights reserved.
+//  Created by NHNEnt on 2019/10/12.
+//  Copyright © 2019 depromeet. All rights reserved.
 //
 
 import UIKit
