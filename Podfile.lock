@@ -14,7 +14,7 @@ DEPENDENCIES:
   - SnapKit
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - GoogleMaps
     - GooglePlaces
     - SnapKit
@@ -26,4 +26,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 0f54888104c00f7e5224530c1f9a3aa6d0c6be88
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.8.3
