@@ -9,5 +9,7 @@ target 'WePet' do
   pod 'GoogleMaps'
   pod 'GooglePlaces'
   pod 'SnapKit'
+  pod 'SwiftyBeaver'
   pod 'Alamofire'
+  pod 'Moya'
 end
