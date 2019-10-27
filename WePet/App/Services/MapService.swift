@@ -18,6 +18,7 @@ final class MapService: MapServiceType {
     }
 
     func getSpots(_ completion: @escaping (Result<[Spot], WepetError>) -> Void) {
-        networking.request(.spots, completion: completion)
+//        networking.request(.spots, completion: completion)
+        completion(.success([Spot(), Spot(), Spot()]))
     }
 }
