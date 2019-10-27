@@ -2,7 +2,7 @@
 //  ApplicationInjector.swift
 //  WePet
 //
-//  Created by NHNEnt on 2019/10/15.
+//  Created by hb1love on 2019/10/15.
 //  Copyright © 2019 depromeet. All rights reserved.
 //
 
@@ -10,13 +10,27 @@ import UIKit
 import SwiftyBeaver
 
 struct AppDependency {
+    let window: UIWindow
+    let coordinator: ApplicationCoordinator
     let configureSDKs: () -> Void
     let configureAppearance: () -> Void
 }
 
 struct ApplicationInjector {
     static func resolve() -> AppDependency {
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        let rootController = UINavigationController()
+        window.rootViewController = rootController
+        window.backgroundColor = .white
+        window.makeKeyAndVisible()
+
+        let coordinator = ApplicationCoordinator(
+            window: window,
+            navigationController: rootController
+        )
         return AppDependency(
+            window: window,
+            coordinator: coordinator,
             configureSDKs: configureSDKs,
             configureAppearance: configureAppearance
         )
