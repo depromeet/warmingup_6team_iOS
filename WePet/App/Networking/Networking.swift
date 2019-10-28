@@ -23,9 +23,9 @@ final class Networking<Target: TargetType>: MoyaProvider<Target> {
         super.init(manager: manager, plugins: plugins)
     }
 
-    func request<T: Codable>(
+    func requestWithLog(
         _ target: Target,
-        completion: @escaping (Result<T, WepetError>) -> Void
+        completion: @escaping (Result<Response, WepetError>) -> Void
     ) {
         let requestString = "\(target.method) \(target.path)"
         let message = "REQUEST: \(requestString)"
@@ -33,16 +33,9 @@ final class Networking<Target: TargetType>: MoyaProvider<Target> {
         self.request(target) { result in
             switch result {
             case .success(let response):
-                do {
-                    let data = try response.map(T.self)
-                    let message = "SUCCESS: \(requestString) (\(response.statusCode))"
-                    log.debug(message)
-                    completion(.success(data))
-                } catch {
-                    let message = "FAILURE: \(requestString) (\(response.statusCode))"
-                    log.warning(message)
-                    completion(.failure(.parsingError))
-                }
+                let message = "SUCCESS: \(requestString) (\(response.statusCode))"
+                log.debug(message)
+                completion(.success(response))
             case .failure(let error):
                 if let response = error.response {
                   if let jsonObject = try? response.mapJSON(failsOnEmptyData: false) {
@@ -63,6 +56,29 @@ final class Networking<Target: TargetType>: MoyaProvider<Target> {
                     log.warning(message)
                     completion(.failure(.unknown))
                 }
+            }
+        }
+    }
+
+    func request<T: Codable>(
+        _ target: Target,
+        completion: @escaping (Result<T, WepetError>) -> Void
+    ) {
+        self.requestWithLog(target) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let responseData = try response.map(ResponseData<T>.self)
+                    if let data = responseData.data {
+                        completion(.success(data))
+                    } else {
+                        completion(.failure(.parsingError))
+                    }
+                } catch {
+                    completion(.failure(.parsingError))
+                }
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
     }

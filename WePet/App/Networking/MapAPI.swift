@@ -16,7 +16,7 @@ enum MapAPI {
 
 extension MapAPI: TargetType {
     var baseURL: URL {
-        return URL(string: "http://localhost:8181")!
+        return URL(string: "http://ec2-54-180-149-69.ap-northeast-2.compute.amazonaws.com:8080/api")!
     }
 
     var path: String {

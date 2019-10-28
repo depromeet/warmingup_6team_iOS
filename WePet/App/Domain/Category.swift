@@ -6,7 +6,7 @@
 //  Copyright © 2019 depromeet. All rights reserved.
 //
 
-enum Category: String, CaseIterable {
+enum Category: Int, CaseIterable {
     case favorite
     case park
     case hospital

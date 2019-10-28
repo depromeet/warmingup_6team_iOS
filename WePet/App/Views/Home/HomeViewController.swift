@@ -7,13 +7,14 @@
 //
 
 import UIKit
+import CoreLocation
 import SnapKit
 import Scope
 
 protocol HomeViewControllerType: AnyObject {
     func reload()
-
-    func updateSelectedCategory(_ category: Category)
+    func configureCategory(_ category: Category)
+    func configureWeather(_ weather: Weather)
 }
 
 final class HomeViewController: BaseViewController, HomeViewControllerType {
@@ -28,13 +29,13 @@ final class HomeViewController: BaseViewController, HomeViewControllerType {
         static let categoryLeadingTrailing = 30.f
         static let categoryTableHeight = 270.f
         static let categorySpacing = 16.f
-        static let categoryBottom = 69.f
+        static let categoryBottom = 89.f
         static let goMapWidth = 126.f
         static let goMapHeight = 40.f
     }
 
     private struct Font {
-        static let intro = UIFont.systemFont(ofSize: 23, weight: .ultraLight)
+        static let intro = UIFont.systemFont(ofSize: 23, weight: .light)
         static let gotoMap = UIFont.systemFont(ofSize: 16, weight: .semibold)
     }
 
@@ -53,10 +54,12 @@ final class HomeViewController: BaseViewController, HomeViewControllerType {
     // MARK: - Properties
 
     var presenter: HomePresenterType?
+    private let locationManager = CLLocationManager()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter?.viewDidLoad()
+        locationManager.delegate = self
+        requestLocationAuthorization()
     }
 
     override func setupSubviews() {
@@ -75,7 +78,7 @@ final class HomeViewController: BaseViewController, HomeViewControllerType {
             topStackView.addArrangedSubview($0)
         }
         introTextLabel = UILabel().also {
-            $0.text = "조금 추운 날씨예요\n포근한 펫카페 어떠세요?"
+            $0.alpha = 0
             $0.textColor = UIColor(named: "black_#242424")
             $0.textAlignment = .left
             $0.numberOfLines = 0
@@ -84,11 +87,12 @@ final class HomeViewController: BaseViewController, HomeViewControllerType {
             topStackView.addArrangedSubview($0)
         }
         weatherView = WeatherView().also {
-            $0.isHidden = true
+            $0.alpha = 0
             $0.transform = CGAffineTransform(translationX: 0, y: 40)
             topStackView.addArrangedSubview($0)
         }
         categoryContainerView = UIStackView().also {
+            $0.alpha = 0
             $0.axis = .vertical
             $0.alignment = .leading
             $0.distribution = .fill
@@ -108,10 +112,11 @@ final class HomeViewController: BaseViewController, HomeViewControllerType {
             $0.estimatedRowHeight = UITableView.automaticDimension
             $0.layer.borderColor = UIColor(named: "gray_#BEBEBE")?.cgColor
             $0.layer.borderWidth = 0.5
-            $0.layer.cornerRadius = 20
+            $0.layer.cornerRadius = 10
             categoryContainerView.addArrangedSubview($0)
         }
         mapButton = UIButton().also {
+            $0.alpha = 0
             $0.backgroundColor = UIColor(named: "blue_#4B93FF")
             $0.titleLabel?.font = Font.gotoMap
             $0.setTitle("지도로 보기", for: .normal)
@@ -158,11 +163,23 @@ final class HomeViewController: BaseViewController, HomeViewControllerType {
 extension HomeViewController: SpotlistViewControllerType {
     func reload() {
         tableView.reloadData()
-        showWeatherView()
+        showCategoryContainer()
     }
 
-    func updateSelectedCategory(_ category: Category) {
+    func configureCategory(_ category: Category) {
+        categoryView.configure(category: category)
+    }
 
+    func configureWeather(_ weather: Weather) {
+        introTextLabel.text = weather.type?.introText
+        weatherView.configure(weather: weather)
+        showWeatherView()
+    }
+}
+
+extension HomeViewController: CategoryTabDelegate {
+    func categoryTab(_ categoryTab: CategoryTabView, didSelect category: Category) {
+        presenter?.didSelectCategory(category)
     }
 }
 
@@ -173,12 +190,55 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SpotCell", for: indexPath) as! SpotCell
-        cell.configure(spot: presenter?.spots[indexPath.row])
+        let isLast = presenter?.spots.count == indexPath.row + 1
+        cell.configure(spot: presenter?.spots[indexPath.row], isLast: isLast)
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+extension HomeViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedAlways || status == .authorizedWhenInUse {
+            startMonitoringLocation()
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
+        let location = Location(
+            latitude: visit.coordinate.latitude,
+            longitude: visit.coordinate.longitude
+        )
+        presenter?.didVisit(location)
     }
 }
 
 extension HomeViewController {
+    func requestLocationAuthorization() {
+        let status = CLLocationManager.authorizationStatus()
+        switch status {
+        case .denied, .restricted:
+            log.error("Authorization Status Denied")
+        case .authorizedAlways, .authorizedWhenInUse:
+            startMonitoringLocation()
+        case .notDetermined:
+            locationManager.requestAlwaysAuthorization()
+        default:
+            break
+        }
+    }
+
+    func startMonitoringLocation() {
+        #if DEBUG
+            presenter?.didVisit(Location.startupHub)
+        #else
+            locationManager.startMonitoringVisits()
+        #endif
+    }
+
     @objc func gotoMap() {
         let mapService = MapService(networking: MapNetworking())
         let view = MapViewController()
@@ -191,6 +251,13 @@ extension HomeViewController {
         self.navigationController?.pushViewController(view, animated: true)
     }
 
+    func showCategoryContainer() {
+        UIView.animate(withDuration: 0.2) {
+            self.categoryContainerView.alpha = 1
+            self.mapButton.alpha = 1
+        }
+    }
+
     func showWeatherView() {
         UIView.animate(
             withDuration: 1.5,
@@ -200,8 +267,10 @@ extension HomeViewController {
             options: .curveEaseOut,
             animations: {
                 self.introTextLabel.transform = .identity
+                self.introTextLabel.alpha = 1
                 self.weatherView.transform = .identity
-                self.weatherView.isHidden = false
-        })
+                self.weatherView.alpha = 1
+            }
+        )
     }
 }
