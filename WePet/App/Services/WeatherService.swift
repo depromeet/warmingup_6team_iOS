@@ -7,7 +7,7 @@
 //
 
 protocol WeatherServiceType {
-    func today(_ completion: @escaping (Result<Weather, WepetError>) -> Void)
+    func weather(location: Location, _ completion: @escaping (Result<Weather, WepetError>) -> Void)
 }
 
 final class WeatherService: WeatherServiceType {
@@ -17,7 +17,10 @@ final class WeatherService: WeatherServiceType {
         self.networking = networking
     }
 
-    func today(_ completion: @escaping (Result<Weather, WepetError>) -> Void) {
-        networking.request(.weather, completion: completion)
+    func weather(location: Location, _ completion: @escaping (Result<Weather, WepetError>) -> Void) {
+        guard let latitude = location.latitude,
+            let longitude = location.longitude else { return }
+        networking.request(.weather(latitude: latitude, longitude: longitude),
+                           completion: completion)
     }
 }

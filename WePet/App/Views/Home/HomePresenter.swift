@@ -12,7 +12,8 @@ protocol HomePresenterType {
     var spots: [Spot] { get }
     var selectedCategory: Category { get }
 
-    func viewDidLoad()
+    func didVisit(_ location: Location)
+    func didSelectCategory(_ category: Category)
 }
 
 final class HomePresenter: HomePresenterType {
@@ -22,6 +23,7 @@ final class HomePresenter: HomePresenterType {
 
     private(set) var spots: [Spot] = []
     private(set) var selectedCategory: Category = .favorite
+    private var isLoaded = false
 
     init(
         view: HomeViewControllerType,
@@ -35,9 +37,28 @@ final class HomePresenter: HomePresenterType {
 }
 
 extension HomePresenter {
-    func viewDidLoad() {
+    func didVisit(_ location: Location) {
+        if isLoaded { return }
+        isLoaded = true
+        weatherService.weather(location: location) { [weak self] result in
+            guard let `self` = self else { return }
+            switch result {
+            case .success(let weather):
+                self.selectedCategory = weather.type?.recommendCategory ?? .cafe
+                self.fetchSpots()
+                DispatchQueue.main.async {
+                    self.view?.configureWeather(weather)
+                    self.view?.configureCategory(self.selectedCategory)
+                }
+            case .failure(let error):
+                log.warning(error)
+            }
+        }
+    }
+
+    func didSelectCategory(_ category: Category) {
+        self.selectedCategory = category
         fetchSpots()
-        view?.updateSelectedCategory(.cafe)
     }
 }
 
@@ -51,7 +72,7 @@ private extension HomePresenter {
                     self?.view?.reload()
                 }
             case .failure(let error):
-                log.debug(error.localizedDescription)
+                log.warning(error.localizedDescription)
             }
         }
     }

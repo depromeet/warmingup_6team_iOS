@@ -21,6 +21,8 @@ final class SpotCell: BaseTableViewCell {
         static let nameStackViewSpacing = 5.f
         static let favoriteTop = 9.f
         static let favoriteTrailing = 13.f
+        static let separatorHeight = 1.f
+        static let separatorLeadingTrailing = 18.f
     }
 
     private struct Font {
@@ -34,6 +36,7 @@ final class SpotCell: BaseTableViewCell {
     private var thumbnailView: UIImageView!
     private var textStackView: UIStackView!
     private var favortieButton: UIButton!
+    private var separatorView: UIView!
 
     // MARK: - Subviews(textStackView)
 
@@ -89,6 +92,10 @@ final class SpotCell: BaseTableViewCell {
             $0.font = Font.address
             textStackView.addArrangedSubview($0)
         }
+        separatorView = UIView().also {
+            $0.backgroundColor = UIColor(named: "separator_bg")
+            contentView.addSubview($0)
+        }
     }
 
     override func setupConstraints() {
@@ -107,15 +114,22 @@ final class SpotCell: BaseTableViewCell {
             $0.top.equalToSuperview().offset(Metric.favoriteTop)
             $0.trailing.equalToSuperview().offset(-Metric.favoriteTrailing)
         }
+        separatorView.snp.makeConstraints {
+            $0.bottom.equalToSuperview()
+            $0.height.equalTo(Metric.separatorHeight)
+            $0.leading.equalToSuperview().offset(Metric.separatorLeadingTrailing)
+            $0.trailing.equalToSuperview().offset(-Metric.separatorLeadingTrailing)
+        }
     }
 }
 
 extension SpotCell {
-    func configure(spot: Spot?) {
+    func configure(spot: Spot?, isLast: Bool = false) {
         thumbnailView.image = UIImage(named: "sample")
         thumbnailView.layer.cornerRadius = Metric.thumbnailSize / 2
         nameLabel.text = "펫조이애견카페"
         distanceLabel.text = "125m"
         addressLabel.text = "서울 종로구 대학로8길 45-2"
+        separatorView.isHidden = isLast
     }
 }

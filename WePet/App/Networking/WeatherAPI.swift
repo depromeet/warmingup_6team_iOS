@@ -10,18 +10,18 @@ import Foundation
 import Moya
 
 enum WeatherAPI {
-    case weather
+    case weather(latitude: Double, longitude: Double)
 }
 
 extension WeatherAPI: TargetType {
     var baseURL: URL {
-        return URL(string: "http://localhost:8181")!
+        return URL(string: "http://ec2-54-180-149-69.ap-northeast-2.compute.amazonaws.com:8080/api")!
     }
 
     var path: String {
         switch self {
-        case .weather:
-            return "weather"
+        case .weather(let latitude, let longitude):
+            return "weather/\(latitude)/\(longitude)"
         }
     }
 
@@ -34,7 +34,7 @@ extension WeatherAPI: TargetType {
 
     var task: Task {
         switch self {
-        default:
+        case .weather:
             return .requestPlain
         }
     }
@@ -46,7 +46,7 @@ extension WeatherAPI: TargetType {
     var sampleData: Data {
         switch self {
         case .weather:
-            return "{\"type\": \"sunny\"}".data(using: String.Encoding.utf8)!
+            return Data()
         }
     }
 }

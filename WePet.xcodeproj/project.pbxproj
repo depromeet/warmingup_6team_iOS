@@ -26,6 +26,8 @@
 		2D7FA2CB236421A100E7D3BD /* ApplicationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D7FA2CA236421A100E7D3BD /* ApplicationCoordinator.swift */; };
 		2D7FA2CD236422D900E7D3BD /* HomePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D7FA2CC236422D900E7D3BD /* HomePresenter.swift */; };
 		2D7FA2CF236422ED00E7D3BD /* MapPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D7FA2CE236422ED00E7D3BD /* MapPresenter.swift */; };
+		2D95EF632366FCB9009E0ADE /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D95EF622366FCB9009E0ADE /* Location.swift */; };
+		2D95EF6523671A2E009E0ADE /* ResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D95EF6423671A2E009E0ADE /* ResponseData.swift */; };
 		2D9601332354C1A400B76984 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9601322354C1A400B76984 /* Networking.swift */; };
 		2D9601352354C1E400B76984 /* MapAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9601342354C1E400B76984 /* MapAPI.swift */; };
 		2D9601372354C2BF00B76984 /* MapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9601362354C2BF00B76984 /* MapService.swift */; };
@@ -61,6 +63,8 @@
 		2D7FA2CA236421A100E7D3BD /* ApplicationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationCoordinator.swift; sourceTree = "<group>"; };
 		2D7FA2CC236422D900E7D3BD /* HomePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePresenter.swift; sourceTree = "<group>"; };
 		2D7FA2CE236422ED00E7D3BD /* MapPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPresenter.swift; sourceTree = "<group>"; };
+		2D95EF622366FCB9009E0ADE /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		2D95EF6423671A2E009E0ADE /* ResponseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseData.swift; sourceTree = "<group>"; };
 		2D9601322354C1A400B76984 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		2D9601342354C1E400B76984 /* MapAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAPI.swift; sourceTree = "<group>"; };
 		2D9601362354C2BF00B76984 /* MapService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapService.swift; sourceTree = "<group>"; };
@@ -133,14 +137,6 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
-		2D4D61D2236430390090DB52 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				2D4D61F02364B6E70090DB52 /* CategoryTabView.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
 		2D4D61D7236456FF0090DB52 /* Color */ = {
 			isa = PBXGroup;
 			children = (
@@ -153,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				2D4D61D5236433BF0090DB52 /* WeatherView.swift */,
+				2D4D61F02364B6E70090DB52 /* CategoryTabView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -195,7 +192,6 @@
 		2D7FA2C12364201D00E7D3BD /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				2D4D61D2236430390090DB52 /* View */,
 				2D7FA2C4236420A500E7D3BD /* HomeViewController.swift */,
 				2D7FA2CC236422D900E7D3BD /* HomePresenter.swift */,
 			);
@@ -315,6 +311,8 @@
 			children = (
 				2D9D42DB2354D1BB002B4534 /* Spot.swift */,
 				2D9D42E02354DE08002B4534 /* Weather.swift */,
+				2D95EF622366FCB9009E0ADE /* Location.swift */,
+				2D95EF6423671A2E009E0ADE /* ResponseData.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -482,6 +480,7 @@
 				2D7FA2C32364207A00E7D3BD /* MapViewController.swift in Sources */,
 				2D9D42E52354ED2A002B4534 /* ApplicationInjector.swift in Sources */,
 				2D0E58BF2351B55A008F82BE /* AppDelegate.swift in Sources */,
+				2D95EF632366FCB9009E0ADE /* Location.swift in Sources */,
 				2D96013A2354C34700B76984 /* WeatherService.swift in Sources */,
 				2D9601352354C1E400B76984 /* MapAPI.swift in Sources */,
 				2D4D61E223646BD00090DB52 /* SpotlistViewController.swift in Sources */,
@@ -490,6 +489,7 @@
 				2D9D42DC2354D1BB002B4534 /* Spot.swift in Sources */,
 				2D4D61EB236471F60090DB52 /* SpotCell.swift in Sources */,
 				2D4D61D1236429EB0090DB52 /* Int+Additions.swift in Sources */,
+				2D95EF6523671A2E009E0ADE /* ResponseData.swift in Sources */,
 				2D4D61F12364B6E70090DB52 /* CategoryTabView.swift in Sources */,
 				2D4D61DD23645CC40090DB52 /* BaseView.swift in Sources */,
 				2D4D61E623646C500090DB52 /* SpotlistPresenter.swift in Sources */,
@@ -620,7 +620,9 @@
 			baseConfigurationReference = B2B8E65FB8DFC5373D6E67ED /* Pods-WePet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7KW522KWZF;
 				INFOPLIST_FILE = "$(SRCROOT)/WePet/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -628,6 +630,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.depromeet.wepet;
 				PRODUCT_NAME = Wepet;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -638,7 +641,9 @@
 			baseConfigurationReference = 9DF652025FE8EE0597F29285 /* Pods-WePet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 7KW522KWZF;
 				INFOPLIST_FILE = "$(SRCROOT)/WePet/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -646,6 +651,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.depromeet.wepet;
 				PRODUCT_NAME = Wepet;
+				PROVISIONING_PROFILE_SPECIFIER = depromeet_Wepet_appstore_191029;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
