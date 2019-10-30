@@ -39,6 +39,8 @@
 		2D9D42E12354DE08002B4534 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9D42E02354DE08002B4534 /* Weather.swift */; };
 		2D9D42E52354ED2A002B4534 /* ApplicationInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9D42E42354ED2A002B4534 /* ApplicationInjector.swift */; };
 		D790C183AFEFAC21002432CF /* Pods_WePet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9697D62530A13F54932E9C3 /* Pods_WePet.framework */; };
+		EE4B79CA2369881000D1D29D /* BottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4B79C92369881000D1D29D /* BottomSheetViewController.swift */; };
+		EE4B79CC236997E600D1D29D /* BottomSheetPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4B79CB236997E600D1D29D /* BottomSheetPresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +80,8 @@
 		9DF652025FE8EE0597F29285 /* Pods-WePet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WePet.release.xcconfig"; path = "Target Support Files/Pods-WePet/Pods-WePet.release.xcconfig"; sourceTree = "<group>"; };
 		B2B8E65FB8DFC5373D6E67ED /* Pods-WePet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WePet.debug.xcconfig"; path = "Target Support Files/Pods-WePet/Pods-WePet.debug.xcconfig"; sourceTree = "<group>"; };
 		C9697D62530A13F54932E9C3 /* Pods_WePet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WePet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EE4B79C92369881000D1D29D /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetViewController.swift; sourceTree = "<group>"; };
+		EE4B79CB236997E600D1D29D /* BottomSheetPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -266,6 +270,7 @@
 				2D7FA2C12364201D00E7D3BD /* Home */,
 				2D4D61E323646BDC0090DB52 /* Spot */,
 				2D7FA2C023641FEC00E7D3BD /* Map */,
+				EE4B79C8236987D400D1D29D /* BottomSheet */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -332,6 +337,15 @@
 				C9697D62530A13F54932E9C3 /* Pods_WePet.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EE4B79C8236987D400D1D29D /* BottomSheet */ = {
+			isa = PBXGroup;
+			children = (
+				EE4B79C92369881000D1D29D /* BottomSheetViewController.swift */,
+				EE4B79CB236997E600D1D29D /* BottomSheetPresenter.swift */,
+			);
+			path = BottomSheet;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -477,10 +491,12 @@
 				2D9601332354C1A400B76984 /* Networking.swift in Sources */,
 				2D4D61CE2364273B0090DB52 /* BaseViewController.swift in Sources */,
 				2D7FA2C5236420A500E7D3BD /* HomeViewController.swift in Sources */,
+				EE4B79CA2369881000D1D29D /* BottomSheetViewController.swift in Sources */,
 				2D7FA2C32364207A00E7D3BD /* MapViewController.swift in Sources */,
 				2D9D42E52354ED2A002B4534 /* ApplicationInjector.swift in Sources */,
 				2D0E58BF2351B55A008F82BE /* AppDelegate.swift in Sources */,
 				2D95EF632366FCB9009E0ADE /* Location.swift in Sources */,
+				EE4B79CC236997E600D1D29D /* BottomSheetPresenter.swift in Sources */,
 				2D96013A2354C34700B76984 /* WeatherService.swift in Sources */,
 				2D9601352354C1E400B76984 /* MapAPI.swift in Sources */,
 				2D4D61E223646BD00090DB52 /* SpotlistViewController.swift in Sources */,
@@ -622,7 +638,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7KW522KWZF;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "$(SRCROOT)/WePet/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
