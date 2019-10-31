@@ -23,12 +23,40 @@ class BottomSheetViewController: BaseViewController {
         tableView.register(SpotCell.self, forCellReuseIdentifier: "SpotCell")
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.separatorStyle = .none
+        tableView.estimatedRowHeight = UITableView.automaticDimension
+        view.addSubview(tableView)
         return tableView
     }()
     
-    let fullView: CGFloat = 100
+    private lazy var line: UIImageView = {
+        let line: UIImageView = UIImageView()
+        line.image = UIImage(named: "rectangle")
+        view.addSubview(line)
+        return line
+    }()
+    
+    private lazy var bottomView: UIView = {
+        let bottomView: UIView = UIView()
+        bottomView.backgroundColor = .white
+        bottomView.alpha = 0
+        view.addSubview(bottomView)
+        return bottomView
+    }()
+    
     var partialView: CGFloat {
-        return UIScreen.main.bounds.height - 150
+        guard let count = presenter?.spots.count else {
+            return 54.0
+        }
+        if count >= 3 {
+            return 50.0 + 21.0 + (80.0 * 3)
+        } else {
+            return 50.0 + 21.0 + CGFloat(80 * count)
+        }
+    }
+    
+    var fullView: CGFloat {
+        return UIScreen.main.bounds.height - 114
     }
     
     func prepareBackgroundView(){
@@ -45,6 +73,8 @@ class BottomSheetViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configurationConstarint()
+        presenter?.viewDidLoad()
         view.backgroundColor = .green
         let gesture = UIPanGestureRecognizer.init(target: self, action: #selector(panGesture))
         view.addGestureRecognizer(gesture)
@@ -60,8 +90,24 @@ class BottomSheetViewController: BaseViewController {
 
         UIView.animate(withDuration: 0.5) { [weak self] in
             let frame = self?.view.frame
-            let yComponent = UIScreen.main.bounds.height - 200
-            self?.view.frame = CGRect(x: 0, y: yComponent, width: frame!.width, height: frame!.height)
+            self?.view.frame = CGRect(x: 0, y: frame!.height - (self?.partialView ?? 0) , width: frame!.width, height: frame!.height)
+        }
+    }
+    
+    func configurationConstarint() {
+        tableView.snp.makeConstraints {
+            $0.leading.bottom.trailing.equalToSuperview()
+            $0.top.equalTo(21.0)
+        }
+        
+        bottomView.snp.makeConstraints {
+            $0.leading.bottom.trailing.equalToSuperview()
+            $0.top.equalToSuperview().offset(21.0)
+        }
+        
+        line.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().offset(12.0)
         }
     }
     
@@ -82,12 +128,14 @@ class BottomSheetViewController: BaseViewController {
             
             UIView.animate(withDuration: duration, delay: 0.0, options: [.allowUserInteraction], animations: {
                 if  velocity.y >= 0 {
-                    self.view.frame = CGRect(x: 0, y: self.partialView, width: self.view.frame.width, height: self.view.frame.height)
+                    self.view.frame = CGRect(x: 0, y: self.view.frame.height - 54.0, width: self.view.frame.width, height: self.view.frame.height)
+                    self.bottomView.alpha = 1
                 } else {
-                    self.view.frame = CGRect(x: 0, y: self.fullView, width: self.view.frame.width, height: self.view.frame.height)
+                    self.view.frame = CGRect(x: 0, y: 114, width: self.view.frame.width, height: self.view.frame.height)
+                    self.bottomView.alpha = 0
                 }
                 
-                }, completion: nil)
+            }, completion: nil)
         }
     }
     
@@ -113,8 +161,7 @@ extension BottomSheetViewController: UITableViewDelegate, UITableViewDataSource 
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SpotCell", for: indexPath) as! SpotCell
-        let isLast = presenter?.spots.count == indexPath.row + 1
-        cell.configure(spot: presenter?.spots[indexPath.row], isLast: isLast)
+        cell.configure(spot: presenter?.spots[indexPath.row], isLast: false)
         return cell
     }
 
@@ -125,6 +172,6 @@ extension BottomSheetViewController: UITableViewDelegate, UITableViewDataSource 
 
 extension BottomSheetViewController: BottomSheetViewControllerType {
     func reload() {
-        
+        tableView.reloadData()
     }
 }

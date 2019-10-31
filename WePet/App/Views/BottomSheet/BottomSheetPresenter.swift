@@ -14,14 +14,14 @@ protocol BottomSheetPresenterType {
 }
 
 final class BottomSheetPresenter: BottomSheetPresenterType {
-    private weak var view: MapViewControllerType?
+    private weak var view: BottomSheetViewControllerType?
     private var mapService: MapServiceType
     private var categories: [Category]
 
     private(set) var spots: [Spot] = []
 
     init(
-        view: MapViewControllerType,
+        view: BottomSheetViewControllerType,
         mapService: MapServiceType,
         categories: [Category]
     ) {
@@ -33,6 +33,7 @@ final class BottomSheetPresenter: BottomSheetPresenterType {
 
 extension BottomSheetPresenter {
     func viewDidLoad() {
+        
         mapService.getSpots { [weak self] result in
             switch result {
             case .success(let spots):

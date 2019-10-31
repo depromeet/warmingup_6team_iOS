@@ -64,9 +64,15 @@ class MapViewController: BaseViewController {
     }
     
     func addBottomSheetView() {
+        let mapService = MapService(networking: MapNetworking())
         // 1- Init bottomSheetVC
         let bottomSheetVC = BottomSheetViewController()
-
+        let presenter = BottomSheetPresenter(
+            view: bottomSheetVC,
+            mapService: mapService,
+            categories: []
+        )
+        bottomSheetVC.presenter = presenter
         // 2- Add bottomSheetVC as a child view
         addChild(bottomSheetVC)
         view.addSubview(bottomSheetVC.view)
