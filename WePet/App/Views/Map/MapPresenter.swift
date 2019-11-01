@@ -9,6 +9,7 @@
 import Foundation
 
 protocol MapPresenterType {
+    var spots: [Spot] { get }
     func viewDidLoad()
 }
 

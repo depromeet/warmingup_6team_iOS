@@ -18,6 +18,15 @@ class MapViewController: BaseViewController {
     
     var presenter: MapPresenterType?
     
+    private lazy var backButton: UIButton = {
+        let button: UIButton = UIButton(type: .custom)
+        button.setImage(UIImage(named: "arrow"), for: .normal)
+        button.setImage(UIImage(named: "arrow"), for: .normal)
+        button.addTarget(self, action: #selector(pressedBackButton), for: .touchUpInside)
+        view.addSubview(button)
+        return button
+    }()
+    
     // MARK: MapView
     private lazy var mapView: GMSMapView = {
         let camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6.0)
@@ -38,31 +47,51 @@ class MapViewController: BaseViewController {
         return mapView
     }()
     
-    
-    private lazy var bottomSheet: UIView = {
-        let bottomSheet: UIView = UIView()
-        bottomSheet.backgroundColor = .green
-        view.addSubview(bottomSheet)
-        return bottomSheet
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-//        configurationConstarint()
-        addBottomSheetView()
+        view.backgroundColor = .green
+        navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        configurationConstarint()
+//        addBottomSheetView()
+        addBottomInfoView()
     }
     
     func configurationConstarint() {
-        mapView.snp.makeConstraints {
-            $0.centerX.centerY.width.height.equalToSuperview()
-        }
+//        mapView.snp.makeConstraints {
+//            $0.centerX.centerY.width.height.equalToSuperview()
+//        }
         
-        bottomSheet.snp.makeConstraints {
-            $0.leading.trailing.bottom.width.equalToSuperview()
-            $0.height.equalTo(100.0)
+        backButton.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(26.0)
+            $0.top.equalToSuperview().offset(50.0)
         }
     }
     
+    func addBottomInfoView() {
+//        guard let spot = presenter?.spots.first else {
+//            return
+//        }
+        let spot: Spot = Spot(latitude: nil, altitude: nil)
+        let mapDetailViewController = MapDetailViewController()
+        
+        let presenter = MapDetailPresenter(
+            view: mapDetailViewController,
+            spot: spot,
+            categories: []
+        )
+        mapDetailViewController.presenter = presenter
+        addChild(mapDetailViewController)
+        view.addSubview(mapDetailViewController.view)
+        mapDetailViewController.didMove(toParent: self)
+        let width  = view.frame.width
+        mapDetailViewController.view.frame = CGRect(x: 0, y: 0, width: width - 28, height: 221.0)
+        mapDetailViewController.view.snp.makeConstraints {
+            $0.bottom.equalToSuperview().offset(-44.0)
+            $0.height.equalTo(221.0)
+            $0.leading.equalToSuperview().offset(14.0)
+            $0.trailing.equalToSuperview().offset(-14.0)
+        }
+    }
     func addBottomSheetView() {
         let mapService = MapService(networking: MapNetworking())
         // 1- Init bottomSheetVC
@@ -82,6 +111,10 @@ class MapViewController: BaseViewController {
         let height = view.frame.height
         let width  = view.frame.width
         bottomSheetVC.view.frame = CGRect(x: 0, y: self.view.frame.maxY, width: width, height: height)
+    }
+    
+    @objc func pressedBackButton() {
+        navigationController?.popViewController(animated: true)
     }
 }
 

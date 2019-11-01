@@ -39,6 +39,9 @@
 		2D9D42E12354DE08002B4534 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9D42E02354DE08002B4534 /* Weather.swift */; };
 		2D9D42E52354ED2A002B4534 /* ApplicationInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9D42E42354ED2A002B4534 /* ApplicationInjector.swift */; };
 		D790C183AFEFAC21002432CF /* Pods_WePet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9697D62530A13F54932E9C3 /* Pods_WePet.framework */; };
+		EE294F08236B468E00BC77A7 /* MapDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE294F07236B468E00BC77A7 /* MapDetailViewController.swift */; };
+		EE294F0B236B479300BC77A7 /* InfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE294F0A236B479300BC77A7 /* InfoCell.swift */; };
+		EE294F0D236B564100BC77A7 /* MapDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE294F0C236B564100BC77A7 /* MapDetailPresenter.swift */; };
 		EE4B79CA2369881000D1D29D /* BottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4B79C92369881000D1D29D /* BottomSheetViewController.swift */; };
 		EE4B79CC236997E600D1D29D /* BottomSheetPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4B79CB236997E600D1D29D /* BottomSheetPresenter.swift */; };
 /* End PBXBuildFile section */
@@ -80,6 +83,9 @@
 		9DF652025FE8EE0597F29285 /* Pods-WePet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WePet.release.xcconfig"; path = "Target Support Files/Pods-WePet/Pods-WePet.release.xcconfig"; sourceTree = "<group>"; };
 		B2B8E65FB8DFC5373D6E67ED /* Pods-WePet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WePet.debug.xcconfig"; path = "Target Support Files/Pods-WePet/Pods-WePet.debug.xcconfig"; sourceTree = "<group>"; };
 		C9697D62530A13F54932E9C3 /* Pods_WePet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WePet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EE294F07236B468E00BC77A7 /* MapDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDetailViewController.swift; sourceTree = "<group>"; };
+		EE294F0A236B479300BC77A7 /* InfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoCell.swift; sourceTree = "<group>"; };
+		EE294F0C236B564100BC77A7 /* MapDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDetailPresenter.swift; sourceTree = "<group>"; };
 		EE4B79C92369881000D1D29D /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetViewController.swift; sourceTree = "<group>"; };
 		EE4B79CB236997E600D1D29D /* BottomSheetPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -187,8 +193,8 @@
 		2D7FA2C023641FEC00E7D3BD /* Map */ = {
 			isa = PBXGroup;
 			children = (
-				2D7FA2C22364207A00E7D3BD /* MapViewController.swift */,
 				2D7FA2CE236422ED00E7D3BD /* MapPresenter.swift */,
+				2D7FA2C22364207A00E7D3BD /* MapViewController.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -270,6 +276,7 @@
 				2D7FA2C12364201D00E7D3BD /* Home */,
 				2D4D61E323646BDC0090DB52 /* Spot */,
 				2D7FA2C023641FEC00E7D3BD /* Map */,
+				EE294F06236B466700BC77A7 /* MapDetail */,
 				EE4B79C8236987D400D1D29D /* BottomSheet */,
 			);
 			path = Views;
@@ -337,6 +344,24 @@
 				C9697D62530A13F54932E9C3 /* Pods_WePet.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EE294F06236B466700BC77A7 /* MapDetail */ = {
+			isa = PBXGroup;
+			children = (
+				EE294F09236B477900BC77A7 /* Cell */,
+				EE294F07236B468E00BC77A7 /* MapDetailViewController.swift */,
+				EE294F0C236B564100BC77A7 /* MapDetailPresenter.swift */,
+			);
+			path = MapDetail;
+			sourceTree = "<group>";
+		};
+		EE294F09236B477900BC77A7 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				EE294F0A236B479300BC77A7 /* InfoCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		EE4B79C8236987D400D1D29D /* BottomSheet */ = {
@@ -502,12 +527,15 @@
 				2D4D61E223646BD00090DB52 /* SpotlistViewController.swift in Sources */,
 				2D4D61E823646CD10090DB52 /* Category.swift in Sources */,
 				2D4D61D6236433BF0090DB52 /* WeatherView.swift in Sources */,
+				EE294F0B236B479300BC77A7 /* InfoCell.swift in Sources */,
+				EE294F08236B468E00BC77A7 /* MapDetailViewController.swift in Sources */,
 				2D9D42DC2354D1BB002B4534 /* Spot.swift in Sources */,
 				2D4D61EB236471F60090DB52 /* SpotCell.swift in Sources */,
 				2D4D61D1236429EB0090DB52 /* Int+Additions.swift in Sources */,
 				2D95EF6523671A2E009E0ADE /* ResponseData.swift in Sources */,
 				2D4D61F12364B6E70090DB52 /* CategoryTabView.swift in Sources */,
 				2D4D61DD23645CC40090DB52 /* BaseView.swift in Sources */,
+				EE294F0D236B564100BC77A7 /* MapDetailPresenter.swift in Sources */,
 				2D4D61E623646C500090DB52 /* SpotlistPresenter.swift in Sources */,
 				2D9601402354CE4500B76984 /* Logger.swift in Sources */,
 				2D7FA2CB236421A100E7D3BD /* ApplicationCoordinator.swift in Sources */,
