@@ -34,6 +34,7 @@ final class CategoryTabView: BaseView {
     private var buttons: [UIButton]!
     private var underlineView: UIView!
 
+    var categories: [Category] = []
     var delegate: CategoryTabDelegate?
 
     override func setupSubviews() {
@@ -44,17 +45,6 @@ final class CategoryTabView: BaseView {
             $0.spacing = Metric.spacing
             addSubview($0)
         }
-        buttons = Category.allCases.map { category in
-            return UIButton().also {
-                $0.tag = category.rawValue
-                $0.setTitle(category.title, for: .normal)
-                $0.addTarget(self, action: #selector(didTapCategory(_:)), for: .touchUpInside)
-                $0.titleLabel?.font = Font.deselected
-                $0.contentEdgeInsets = .zero
-                contentStackView.addArrangedSubview($0)
-            }
-        }
-        contentStackView.addArrangedSubview(UIView())
         underlineView = UIView().also {
             addSubview($0)
         }
@@ -71,8 +61,23 @@ final class CategoryTabView: BaseView {
         }
     }
 
+    func setupButtons(categories: [Category]) {
+        self.categories = categories
+        buttons = categories.map { category in
+            return UIButton().also {
+                $0.tag =  category.id ?? 0
+                $0.setTitle(category.displayName, for: .normal)
+                $0.addTarget(self, action: #selector(didTapCategory(_:)), for: .touchUpInside)
+                $0.titleLabel?.font = Font.deselected
+                $0.contentEdgeInsets = .zero
+                contentStackView.addArrangedSubview($0)
+            }
+        }
+        contentStackView.addArrangedSubview(UIView())
+    }
+
     func configure(category: Category) {
-        guard let button = buttons.first(where: { $0.tag == category.rawValue }) else { return }
+        guard let button = buttons.first(where: { $0.tag == category.id }) else { return }
         updateTabState(target: button)
         setupUnderline(target: button)
     }
@@ -81,7 +86,7 @@ final class CategoryTabView: BaseView {
 private extension CategoryTabView {
     @objc func didTapCategory(_ sender: Any) {
         guard let button = sender as? UIButton else { return }
-        guard let category = Category(rawValue: button.tag) else { return }
+        guard let category = categories.first(where: { $0.id == button.tag }) else { return }
         updateTabState(target: button)
         updateUnderline(target: button)
         delegate?.categoryTab(self, didSelect: category)

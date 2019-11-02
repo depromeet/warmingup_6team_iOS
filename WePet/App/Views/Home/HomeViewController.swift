@@ -12,12 +12,13 @@ import SnapKit
 import Scope
 
 protocol HomeViewControllerType: AnyObject {
-    func reload()
+    func reloadTable()
+    func setupCategories(_ categories: [Category])
     func configureCategory(_ category: Category)
     func configureWeather(_ weather: Weather)
 }
 
-final class HomeViewController: BaseViewController, HomeViewControllerType {
+final class HomeViewController: BaseViewController {
 
     // MARK: - Constants
 
@@ -100,6 +101,7 @@ final class HomeViewController: BaseViewController, HomeViewControllerType {
             view.addSubview($0)
         }
         categoryView = CategoryTabView().also {
+            $0.delegate = self
             categoryContainerView.addArrangedSubview($0)
         }
         tableView = UITableView().also {
@@ -111,7 +113,7 @@ final class HomeViewController: BaseViewController, HomeViewControllerType {
             $0.rowHeight = UITableView.automaticDimension
             $0.estimatedRowHeight = UITableView.automaticDimension
             $0.layer.borderColor = UIColor(named: "gray_#BEBEBE")?.cgColor
-            $0.layer.borderWidth = 0.5
+            $0.layer.borderWidth = 1
             $0.layer.cornerRadius = 10
             categoryContainerView.addArrangedSubview($0)
         }
@@ -160,10 +162,14 @@ final class HomeViewController: BaseViewController, HomeViewControllerType {
     }
 }
 
-extension HomeViewController: SpotlistViewControllerType {
-    func reload() {
+extension HomeViewController: HomeViewControllerType {
+    func reloadTable() {
         tableView.reloadData()
         showCategoryContainer()
+    }
+
+    func setupCategories(_ categories: [Category]) {
+        categoryView.setupButtons(categories: categories)
     }
 
     func configureCategory(_ category: Category) {

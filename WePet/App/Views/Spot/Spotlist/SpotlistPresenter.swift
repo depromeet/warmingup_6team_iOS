@@ -34,16 +34,16 @@ final class SpotlistPresenter: SpotlistPresenterType {
 
 extension SpotlistPresenter {
     func viewDidLoad() {
-        mapService.getSpots { [weak self] result in
-            switch result {
-            case .success(let spots):
-                self?.spots = spots
-                DispatchQueue.main.async {
-                    self?.view?.reload()
-                }
-            case .failure(let error):
-                log.debug(error.localizedDescription)
-            }
-        }
+//        mapService.getSpots { [weak self] result in
+//            switch result {
+//            case .success(let spots):
+//                self?.spots = spots
+//                DispatchQueue.main.async {
+//                    self?.view?.reload()
+//                }
+//            case .failure(let error):
+//                log.debug(error.localizedDescription)
+//            }
+//        }
     }
 }

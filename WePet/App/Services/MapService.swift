@@ -6,8 +6,10 @@
 //  Copyright © 2019 depromeet. All rights reserved.
 //
 
+typealias SpotParam = (distance: Int, size: Int, categoryId: Int?)
 protocol MapServiceType {
-    func getSpots(_ completion: @escaping (Result<[Spot], WepetError>) -> Void)
+    func getCategories(_ completion: @escaping (Result<[Category], WepetError>) -> Void)
+    func getSpots(location: Location, spotParam: SpotParam, _ completion: @escaping (Result<[Spot], WepetError>) -> Void)
 }
 
 final class MapService: MapServiceType {
@@ -17,8 +19,13 @@ final class MapService: MapServiceType {
         self.networking = networking
     }
 
-    func getSpots(_ completion: @escaping (Result<[Spot], WepetError>) -> Void) {
-//        networking.request(.spots, completion: completion)
-        completion(.success([Spot(), Spot(), Spot()]))
+    func getCategories(_ completion: @escaping (Result<[Category], WepetError>) -> Void) {
+        networking.request(.categories, completion: completion)
+    }
+
+    func getSpots(location: Location, spotParam: SpotParam, _ completion: @escaping (Result<[Spot], WepetError>) -> Void) {
+        guard let latitude = location.latitude,
+            let longitude = location.longitude else { return }
+        networking.request(.spots(latitude: latitude, longitude: longitude, spotParam: spotParam), completion: completion)
     }
 }
