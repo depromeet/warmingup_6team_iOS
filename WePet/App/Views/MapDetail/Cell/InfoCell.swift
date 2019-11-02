@@ -15,17 +15,6 @@ class InfoCell: BaseTableViewCell {
         static let phoneNum = UIFont.systemFont(ofSize: 14, weight: .semibold)
         static let list = UIFont.systemFont(ofSize: 12, weight: .semibold)
     }
-
-    
-    private lazy var topStackView: UIStackView = {
-        let stackView: UIStackView = UIStackView()
-        stackView.distribution = .fillProportionally
-        stackView.spacing = 24.0
-        stackView.axis = .horizontal
-        stackView.alignment = .lastBaseline
-        contentView.addSubview(stackView)
-        return stackView
-    }()
     
     private lazy var timeTitle: UILabel = {
         let label: UILabel = UILabel()
@@ -33,6 +22,7 @@ class InfoCell: BaseTableViewCell {
         label.font = Font.title
         label.textColor = UIColor(named: "black_#555559")
         label.numberOfLines = 1
+        contentView.addSubview(label)
         return label
     }()
     
@@ -42,17 +32,8 @@ class InfoCell: BaseTableViewCell {
         label.font = Font.content
         label.textColor = UIColor(named: "black_#555559")
         label.numberOfLines = 1
+        contentView.addSubview(label)
         return label
-    }()
-    
-    private lazy var bottomStackView: UIStackView = {
-        let stackView: UIStackView = UIStackView()
-        stackView.distribution = .fillProportionally
-        stackView.spacing = 24.0
-        stackView.axis = .horizontal
-        stackView.alignment = .lastBaseline
-        contentView.addSubview(stackView)
-        return stackView
     }()
     
     private lazy var callTitle: UILabel = {
@@ -61,16 +42,8 @@ class InfoCell: BaseTableViewCell {
         label.font = Font.title
         label.textColor = UIColor(named: "black_#555559")
         label.numberOfLines = 1
+        contentView.addSubview(label)
         return label
-    }()
-    
-    private lazy var callStackView: UIStackView = {
-        let stackView: UIStackView = UIStackView()
-        stackView.distribution = .fillProportionally
-        stackView.spacing = 12.0
-        stackView.axis = .horizontal
-        stackView.alignment = .lastBaseline
-        return stackView
     }()
     
     private lazy var callContent: UILabel = {
@@ -80,6 +53,7 @@ class InfoCell: BaseTableViewCell {
         label.textAlignment = .center
         label.textColor = UIColor(named: "black_#555559")
         label.numberOfLines = 1
+        contentView.addSubview(label)
         return label
     }()
     
@@ -92,6 +66,7 @@ class InfoCell: BaseTableViewCell {
         button.setTitle("02-123-6235", for: .highlighted)
         button.titleEdgeInsets = UIEdgeInsets(top: 0.0, left: -5.0, bottom: 0.0, right: 0.0)
         button.titleLabel?.font = Font.title
+        contentView.addSubview(button)
         return button
     }()
     
@@ -106,8 +81,6 @@ class InfoCell: BaseTableViewCell {
         button.titleLabel?.font = Font.list
         
         let spacing: CGFloat = 30.0
-//        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0);
-//        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: spacing, bottom: 0, right: 0);
         button.contentVerticalAlignment = .top
         button.semanticContentAttribute = .forceRightToLeft
         button.contentHorizontalAlignment = .left
@@ -115,31 +88,41 @@ class InfoCell: BaseTableViewCell {
         return button
     }()
 
-    override func setupSubviews() {
-        topStackView.addArrangedSubview(timeTitle)
-        topStackView.addArrangedSubview(timeContent)
-        callStackView.addArrangedSubview(callContent)
-        callStackView.addArrangedSubview(callNumber)
-        bottomStackView.addArrangedSubview(callTitle)
-        bottomStackView.addArrangedSubview(callStackView)
-    }
-    
     override func setupConstraints() {
-        topStackView.snp.makeConstraints {
+        
+        timeTitle.snp.makeConstraints {
             $0.top.equalToSuperview().offset(16.0)
             $0.leading.equalToSuperview().offset(29.0)
-            $0.trailing.equalToSuperview().offset(-29.0)
-            $0.bottom.equalTo(bottomStackView.snp.top).offset(-12.0)
+            $0.trailing.equalTo(timeContent.snp.leading).offset(-24.0).priority(.high)
+            $0.bottom.equalTo(callTitle.snp.top).offset(-12.0)
+//            $0.bottom.equalToSuperview()
+
         }
         
-        bottomStackView.snp.makeConstraints {
+        timeContent.snp.makeConstraints {
+            $0.trailing.lessThanOrEqualToSuperview().offset(-28.0)
+            $0.centerY.equalTo(timeTitle)
+        }
+//
+        callTitle.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(29.0)
-            $0.trailing.equalToSuperview().offset(-29.0)
-            $0.bottom.equalTo(listButton.snp.top).offset(-28.0)
+            $0.trailing.equalTo(callContent.snp.leading).offset(-24.0)
+//            $0.bottom.equalTo(callTitle.snp.top).offset(-28.0)
+            $0.bottom.equalToSuperview()
         }
-
-        listButton.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
+//
+        callContent.snp.makeConstraints {
+            $0.trailing.equalTo(callNumber.snp.leading).offset(-12.0)
+            $0.centerY.equalTo(callTitle)
         }
+//
+        callNumber.snp.makeConstraints {
+            $0.trailing.equalToSuperview().offset(-24.0)
+            $0.centerY.equalTo(callTitle)
+        }
+//
+//        listButton.snp.makeConstraints {
+//            $0.centerX.equalToSuperview()
+//        }
     }
 }
