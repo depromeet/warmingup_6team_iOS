@@ -72,7 +72,7 @@ enum WeatherType: String, Codable {
         case .snow: return "조금 추운 날씨예요\n포근한 펫카페 어떠세요?"
         case .mist: return "조금 추운 날씨예요\n포근한 펫카페 어떠세요?"
         case .smoke: return "조금 추운 날씨예요\n포근한 펫카페 어떠세요?"
-        case .clear: return "화창한 날씨에\n산책을 나가보는게 어떨까요?"
+        case .clear: return "화창한 날씨에\n산책을 나가보는 건 어떨까요?"
         case .clouds: return "조금 추운 날씨예요\n포근한 펫카페 어떠세요?"
         }
     }

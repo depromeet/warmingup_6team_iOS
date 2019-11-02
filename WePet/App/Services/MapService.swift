@@ -10,6 +10,7 @@ typealias SpotParam = (distance: Int, size: Int, categoryId: Int?)
 protocol MapServiceType {
     func getCategories(_ completion: @escaping (Result<[Category], WepetError>) -> Void)
     func getSpots(location: Location, spotParam: SpotParam, _ completion: @escaping (Result<[Spot], WepetError>) -> Void)
+    func getSpot(placeId: String?, _ completion: @escaping (Result<Spot, WepetError>) -> Void)
 }
 
 final class MapService: MapServiceType {
@@ -24,8 +25,18 @@ final class MapService: MapServiceType {
     }
 
     func getSpots(location: Location, spotParam: SpotParam, _ completion: @escaping (Result<[Spot], WepetError>) -> Void) {
-        guard let latitude = location.latitude,
-            let longitude = location.longitude else { return }
+        guard let latitude = location.latitude, let longitude = location.longitude else {
+            completion(.failure(.requestFailed))
+            return
+        }
         networking.request(.spots(latitude: latitude, longitude: longitude, spotParam: spotParam), completion: completion)
+    }
+
+    func getSpot(placeId: String?, _ completion: @escaping (Result<Spot, WepetError>) -> Void) {
+        guard let placeId = placeId else {
+            completion(.failure(.requestFailed))
+            return
+        }
+        networking.request(.spot(placeId: placeId), completion: completion)
     }
 }

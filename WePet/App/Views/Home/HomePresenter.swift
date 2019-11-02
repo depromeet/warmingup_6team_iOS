@@ -71,8 +71,8 @@ private extension HomePresenter {
     }
 
     func getRecommendCategory() -> Category? {
-        guard let weather = self.weather else { return nil }
-        return categories.first(where: { $0.type == weather.type?.recommendCategory }) ?? categories.first
+        return categories.first(where: { $0.type == weather?.type?.recommendCategory })
+            ?? categories.first
     }
 }
 
@@ -89,6 +89,9 @@ private extension HomePresenter {
                 }
             case .failure(let error):
                 log.warning(error)
+                DispatchQueue.main.async {
+                    dispatchGroup?.leave()
+                }
             }
         }
     }

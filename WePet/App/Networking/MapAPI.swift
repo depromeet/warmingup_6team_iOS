@@ -11,6 +11,7 @@ import Moya
 
 enum MapAPI {
     case categories
+    case spot(placeId: String)
     case spots(latitude: Double, longitude: Double, spotParam: SpotParam)
     case favorite
 }
@@ -24,6 +25,8 @@ extension MapAPI: TargetType {
         switch self {
         case .categories:
             return "category"
+        case .spot(let placeId):
+            return "location/\(placeId)"
         case .spots(let latitude, let longitude, _):
             return "location/\(latitude)/\(longitude)"
         case .favorite:
