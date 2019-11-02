@@ -224,10 +224,10 @@ extension HomeViewController: CLLocationManagerDelegate {
         }
     }
 
-    func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = Location(
-            latitude: visit.coordinate.latitude,
-            longitude: visit.coordinate.longitude
+            latitude: manager.location?.coordinate.latitude,
+            longitude: manager.location?.coordinate.longitude
         )
         presenter?.didVisit(location)
     }
@@ -249,10 +249,10 @@ extension HomeViewController {
     }
 
     func startMonitoringLocation() {
-        #if DEBUG
+        #if targetEnvironment(simulator)
             presenter?.didVisit(Location.startupHub)
         #else
-            locationManager.startMonitoringVisits()
+            locationManager.startUpdatingLocation()
         #endif
     }
 
