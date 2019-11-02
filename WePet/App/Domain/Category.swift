@@ -6,22 +6,35 @@
 //  Copyright © 2019 depromeet. All rights reserved.
 //
 
-enum Category: Int, CaseIterable {
+struct Category: Codable {
+    var id: Int?
+    var displayName: String?
+    var searchKeyword: String?
+
+    var type: CategoryType?
+
+    enum CodingKeys: String, CodingKey {
+        case id = "categoryId"
+        case displayName
+        case searchKeyword
+    }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try values.decodeIfPresent(Int.self, forKey: .id)
+        displayName = try values.decodeIfPresent(String.self, forKey: .displayName)
+        searchKeyword = try values.decodeIfPresent(String.self, forKey: .searchKeyword)
+        if let keyword = searchKeyword, let categoryType = CategoryType(rawValue: keyword) {
+            type = categoryType
+        }
+    }
+}
+
+enum CategoryType: String, CaseIterable {
     case favorite
     case park
     case hospital
     case mall
     case cafe
     case restaurant
-
-    var title: String {
-        switch self {
-        case .favorite: return "즐겨찾기"
-        case .park: return "공원"
-        case .hospital: return "병원"
-        case .mall: return "용품"
-        case .cafe: return "카페"
-        case .restaurant: return "식당"
-        }
-    }
 }

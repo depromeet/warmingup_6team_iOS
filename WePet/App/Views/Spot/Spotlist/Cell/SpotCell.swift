@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 final class SpotCell: BaseTableViewCell {
 
@@ -53,6 +54,7 @@ final class SpotCell: BaseTableViewCell {
         thumbnailView = UIImageView().also {
             $0.layer.borderWidth = 0
             $0.clipsToBounds = true
+            $0.image = UIImage(named: "sample")
             contentView.addSubview($0)
         }
         textStackView = UIStackView().also {
@@ -83,6 +85,7 @@ final class SpotCell: BaseTableViewCell {
             $0.numberOfLines = 1
             $0.textColor = UIColor(named: "blue_#4B93FF")
             $0.font = Font.distance
+            $0.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: .horizontal)
             nameStackView.addArrangedSubview($0)
         }
         nameStackView.addArrangedSubview(UIView())
@@ -125,9 +128,11 @@ final class SpotCell: BaseTableViewCell {
 
 extension SpotCell {
     func configure(spot: Spot?, isLast: Bool = false) {
-        thumbnailView.image = UIImage(named: "sample")
+        ImageLoader.image(for: spot?.photoUrl) { [weak self] image in
+            self?.thumbnailView.image = image ?? UIImage(named: "sample")
+        }
         thumbnailView.layer.cornerRadius = Metric.thumbnailSize / 2
-        nameLabel.text = "펫조이애견카페"
+        nameLabel.text = spot?.name
         distanceLabel.text = "125m"
         addressLabel.text = "서울 종로구 대학로8길 45-2"
         separatorView.isHidden = isLast

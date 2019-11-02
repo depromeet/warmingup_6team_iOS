@@ -10,7 +10,8 @@ import Foundation
 import Moya
 
 enum MapAPI {
-    case spots
+    case categories
+    case spots(latitude: Double, longitude: Double, spotParam: SpotParam)
     case favorite
 }
 
@@ -21,8 +22,10 @@ extension MapAPI: TargetType {
 
     var path: String {
         switch self {
-        case .spots:
-            return "spots"
+        case .categories:
+            return "category"
+        case .spots(let latitude, let longitude, _):
+            return "location/\(latitude)/\(longitude)"
         case .favorite:
             return "spots/favorite"
         }
@@ -37,6 +40,11 @@ extension MapAPI: TargetType {
 
     var task: Task {
         switch self {
+        case .spots(_, _, let spotParam):
+            return .requestParameters(
+                parameters: makeSpotsParameters(spotParam: spotParam),
+                encoding: URLEncoding.default
+            )
         default:
             return .requestPlain
         }
@@ -53,5 +61,17 @@ extension MapAPI: TargetType {
         default:
             return Data()
         }
+    }
+}
+
+private extension MapAPI {
+    func makeSpotsParameters(spotParam: SpotParam) -> [String: Any] {
+        var parameters = [String: Any]()
+        parameters["distance"] = spotParam.distance
+        parameters["size"] = spotParam.size
+        if let categoryId = spotParam.categoryId {
+            parameters["categoryId"] = categoryId
+        }
+        return parameters
     }
 }

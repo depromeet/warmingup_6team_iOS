@@ -51,7 +51,7 @@ enum WeatherType: String, Codable {
         }
     }
 
-    var recommendCategory: Category {
+    var recommendCategory: CategoryType {
         switch self {
         case .thunderstorm: return .cafe
         case .drizzle: return .cafe
