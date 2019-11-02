@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyBeaver
+import GoogleMaps
 
 struct AppDependency {
     let window: UIWindow
@@ -38,13 +39,18 @@ struct ApplicationInjector {
 
     static func configureSDKs() {
         configureLogger()
+        configureMaps()
     }
 
     static func configureLogger() {
         let console = ConsoleDestination()
         log.addDestination(console)
     }
-
+    
+    static func configureMaps() {
+//        GMSServices.provideAPIKey("AIzaSyDpdG8O6veYWC-nh8lGWbAQaDpV7h8zMiM")
+    }
+    
     static func configureAppearance() {
         UINavigationBar.appearance().shadowImage = UIImage()
     }
