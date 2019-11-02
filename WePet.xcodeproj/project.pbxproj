@@ -39,6 +39,10 @@
 		2D9D42DE2354DA82002B4534 /* WepetError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9D42DD2354DA82002B4534 /* WepetError.swift */; };
 		2D9D42E12354DE08002B4534 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9D42E02354DE08002B4534 /* Weather.swift */; };
 		2D9D42E52354ED2A002B4534 /* ApplicationInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9D42E42354ED2A002B4534 /* ApplicationInjector.swift */; };
+		2DD4A029236D5870002BF6B5 /* SpotDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4A028236D5870002BF6B5 /* SpotDetailViewController.swift */; };
+		2DD4A02B236D587B002BF6B5 /* SpotDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2DD4A02A236D587B002BF6B5 /* SpotDetail.storyboard */; };
+		2DD4A02D236D58BD002BF6B5 /* SpotDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4A02C236D58BD002BF6B5 /* SpotDetailPresenter.swift */; };
+		2DD4A02F236D6AB0002BF6B5 /* UIViewController+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4A02E236D6AB0002BF6B5 /* UIViewController+Additions.swift */; };
 		D790C183AFEFAC21002432CF /* Pods_WePet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9697D62530A13F54932E9C3 /* Pods_WePet.framework */; };
 		EE294F08236B468E00BC77A7 /* MapDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE294F07236B468E00BC77A7 /* MapDetailViewController.swift */; };
 		EE294F0B236B479300BC77A7 /* InfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE294F0A236B479300BC77A7 /* InfoCell.swift */; };
@@ -82,6 +86,10 @@
 		2D9D42DD2354DA82002B4534 /* WepetError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WepetError.swift; sourceTree = "<group>"; };
 		2D9D42E02354DE08002B4534 /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 		2D9D42E42354ED2A002B4534 /* ApplicationInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationInjector.swift; sourceTree = "<group>"; };
+		2DD4A028236D5870002BF6B5 /* SpotDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotDetailViewController.swift; sourceTree = "<group>"; };
+		2DD4A02A236D587B002BF6B5 /* SpotDetail.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SpotDetail.storyboard; sourceTree = "<group>"; };
+		2DD4A02C236D58BD002BF6B5 /* SpotDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotDetailPresenter.swift; sourceTree = "<group>"; };
+		2DD4A02E236D6AB0002BF6B5 /* UIViewController+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Additions.swift"; sourceTree = "<group>"; };
 		9DF652025FE8EE0597F29285 /* Pods-WePet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WePet.release.xcconfig"; path = "Target Support Files/Pods-WePet/Pods-WePet.release.xcconfig"; sourceTree = "<group>"; };
 		B2B8E65FB8DFC5373D6E67ED /* Pods-WePet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WePet.debug.xcconfig"; path = "Target Support Files/Pods-WePet/Pods-WePet.debug.xcconfig"; sourceTree = "<group>"; };
 		C9697D62530A13F54932E9C3 /* Pods_WePet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WePet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -145,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				2D4D61D0236429EB0090DB52 /* Int+Additions.swift */,
+				2DD4A02E236D6AB0002BF6B5 /* UIViewController+Additions.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -169,6 +178,7 @@
 		2D4D61E323646BDC0090DB52 /* Spot */ = {
 			isa = PBXGroup;
 			children = (
+				2DD4A027236D5857002BF6B5 /* SpotDetail */,
 				2D4D61E423646BF40090DB52 /* Spotlist */,
 			);
 			path = Spot;
@@ -349,6 +359,16 @@
 			path = Domain;
 			sourceTree = "<group>";
 		};
+		2DD4A027236D5857002BF6B5 /* SpotDetail */ = {
+			isa = PBXGroup;
+			children = (
+				2DD4A02A236D587B002BF6B5 /* SpotDetail.storyboard */,
+				2DD4A028236D5870002BF6B5 /* SpotDetailViewController.swift */,
+				2DD4A02C236D58BD002BF6B5 /* SpotDetailPresenter.swift */,
+			);
+			path = SpotDetail;
+			sourceTree = "<group>";
+		};
 		7288F35BC7D614D103CC3BDA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -446,6 +466,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D4D61DB23645A590090DB52 /* Color.xcassets in Resources */,
+				2DD4A02B236D587B002BF6B5 /* SpotDetail.storyboard in Resources */,
 				2D0E58C82351B55B008F82BE /* Image.xcassets in Resources */,
 				2D7FA2C8236420E400E7D3BD /* Launch.storyboard in Resources */,
 			);
@@ -527,6 +548,7 @@
 				2D9D42E12354DE08002B4534 /* Weather.swift in Sources */,
 				2D9601332354C1A400B76984 /* Networking.swift in Sources */,
 				2D4D61CE2364273B0090DB52 /* BaseViewController.swift in Sources */,
+				2DD4A029236D5870002BF6B5 /* SpotDetailViewController.swift in Sources */,
 				2D7FA2C5236420A500E7D3BD /* HomeViewController.swift in Sources */,
 				EE4B79CA2369881000D1D29D /* BottomSheetViewController.swift in Sources */,
 				2D7FA2C32364207A00E7D3BD /* MapViewController.swift in Sources */,
@@ -540,11 +562,13 @@
 				2D4D61E823646CD10090DB52 /* Category.swift in Sources */,
 				2D4D61D6236433BF0090DB52 /* WeatherView.swift in Sources */,
 				EE294F0B236B479300BC77A7 /* InfoCell.swift in Sources */,
+				2DD4A02F236D6AB0002BF6B5 /* UIViewController+Additions.swift in Sources */,
 				EE294F08236B468E00BC77A7 /* MapDetailViewController.swift in Sources */,
 				2D9D42DC2354D1BB002B4534 /* Spot.swift in Sources */,
 				2D4D61EB236471F60090DB52 /* SpotCell.swift in Sources */,
 				2D4D61D1236429EB0090DB52 /* Int+Additions.swift in Sources */,
 				2D95EF6523671A2E009E0ADE /* ResponseData.swift in Sources */,
+				2DD4A02D236D58BD002BF6B5 /* SpotDetailPresenter.swift in Sources */,
 				2D4D61F12364B6E70090DB52 /* CategoryTabView.swift in Sources */,
 				2D4D61DD23645CC40090DB52 /* BaseView.swift in Sources */,
 				EE294F0D236B564100BC77A7 /* MapDetailPresenter.swift in Sources */,
@@ -678,7 +702,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 7KW522KWZF;
 				INFOPLIST_FILE = "$(SRCROOT)/WePet/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

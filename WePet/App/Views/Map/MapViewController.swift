@@ -71,7 +71,7 @@ class MapViewController: BaseViewController {
 //        guard let spot = presenter?.spots.first else {
 //            return
 //        }
-        let spot: Spot = Spot(latitude: nil, altitude: nil)
+        let spot: Spot = Spot()
         let mapDetailViewController = MapDetailViewController()
         
         let presenter = MapDetailPresenter(

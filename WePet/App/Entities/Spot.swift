@@ -12,6 +12,7 @@ struct Spot: Codable {
     var placeId: String? // google placeId
     var latitude: Double?
     var longitude: Double?
+    var distance: String?
 
     // detail api
     var homePage: String?
