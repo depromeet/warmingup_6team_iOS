@@ -16,6 +16,9 @@ class MapDetailViewController: BaseViewController {
     
     var presenter: MapDetailPresenterType?
     
+    typealias listClosure = () -> Void
+    var sendEventToParent: listClosure?
+    
     private lazy var tableView: UITableView = {
         let tableView: UITableView = UITableView()
         tableView.register(SpotCell.self, forCellReuseIdentifier: "SpotCell")
@@ -52,6 +55,9 @@ extension MapDetailViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "InfoCell", for: indexPath) as! InfoCell
+            cell.sendEventToParent = {
+                self.sendEventToParent?()
+            }
             return cell
         }
     }
@@ -59,6 +65,7 @@ extension MapDetailViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+
 }
 
 extension MapDetailViewController: MapDetailViewControllerType {

@@ -9,6 +9,8 @@
 import UIKit
 
 class InfoCell: BaseTableViewCell {
+    typealias listClosure = () -> Void
+    var sendEventToParent: listClosure?
     private struct Font {
         static let title = UIFont.systemFont(ofSize: 14, weight: .semibold)
         static let content = UIFont.systemFont(ofSize: 14, weight: .regular)
@@ -70,20 +72,9 @@ class InfoCell: BaseTableViewCell {
         return button
     }()
     
-    private lazy var listButton: UIButton = {
-        let button: UIButton = UIButton(type: .custom)
-        button.setTitleColor(UIColor(named: "gray_#ACACAC"), for: .normal)
-        button.setTitleColor(UIColor(named: "gray_#ACACAC"), for: .highlighted)
-        button.setTitle("리스트보기", for: .normal)
-        button.setTitle("리스트보기", for: .highlighted)
-        button.setImage(UIImage(named: "invalidName"), for: .normal)
-        button.setImage(UIImage(named: "invalidName"), for: .highlighted)
-        button.titleLabel?.font = Font.list
-        
-        let spacing: CGFloat = 30.0
-        button.contentVerticalAlignment = .top
-        button.semanticContentAttribute = .forceRightToLeft
-        button.contentHorizontalAlignment = .left
+    private lazy var listButton: BottomImageButton = {
+        let button: BottomImageButton = BottomImageButton()
+        button.addTarget(self, action: #selector(pressedListButton), for: .touchUpInside)
         contentView.addSubview(button)
         return button
     }()
@@ -95,34 +86,37 @@ class InfoCell: BaseTableViewCell {
             $0.leading.equalToSuperview().offset(29.0)
             $0.trailing.equalTo(timeContent.snp.leading).offset(-24.0).priority(.high)
             $0.bottom.equalTo(callTitle.snp.top).offset(-12.0)
-//            $0.bottom.equalToSuperview()
-
         }
         
         timeContent.snp.makeConstraints {
             $0.trailing.lessThanOrEqualToSuperview().offset(-28.0)
             $0.centerY.equalTo(timeTitle)
         }
-//
+        
         callTitle.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(29.0)
-            $0.trailing.equalTo(callContent.snp.leading).offset(-24.0)
-//            $0.bottom.equalTo(callTitle.snp.top).offset(-28.0)
-            $0.bottom.equalToSuperview()
+            $0.trailing.equalTo(callContent.snp.leading).offset(-24.0).priority(.high)
+            $0.bottom.equalTo(listButton.snp.top).offset(-28.0)
         }
-//
+        
         callContent.snp.makeConstraints {
             $0.trailing.equalTo(callNumber.snp.leading).offset(-12.0)
             $0.centerY.equalTo(callTitle)
         }
-//
+        
         callNumber.snp.makeConstraints {
-            $0.trailing.equalToSuperview().offset(-24.0)
+            $0.trailing.lessThanOrEqualToSuperview().offset(-24.0)
             $0.centerY.equalTo(callTitle)
         }
-//
-//        listButton.snp.makeConstraints {
-//            $0.centerX.equalToSuperview()
-//        }
+
+        listButton.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(80.0)
+            $0.bottom.equalToSuperview().offset(-11.0)
+        }
+    }
+    
+    @objc func pressedListButton() {
+        sendEventToParent?()
     }
 }

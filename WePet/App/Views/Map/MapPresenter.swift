@@ -24,6 +24,7 @@ final class MapPresenter: MapPresenterType {
         view: MapViewControllerType,
         mapService: MapServiceType,
         categories: [Category]
+        //ToDo: 저 위의 카테고리는 네비게이션 카테고리 의미, 선택된 카테고리를 따로 받는 부분 추가 예정
     ) {
         self.view = view
         self.mapService = mapService

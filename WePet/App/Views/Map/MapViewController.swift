@@ -57,10 +57,6 @@ class MapViewController: BaseViewController {
     }
     
     func configurationConstarint() {
-//        mapView.snp.makeConstraints {
-//            $0.centerX.centerY.width.height.equalToSuperview()
-//        }
-        
         backButton.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(26.0)
             $0.top.equalToSuperview().offset(50.0)
@@ -68,10 +64,8 @@ class MapViewController: BaseViewController {
     }
     
     func addBottomInfoView() {
-//        guard let spot = presenter?.spots.first else {
-//            return
-//        }
-        let spot: Spot = Spot(latitude: nil, altitude: nil)
+
+        let spot: Spot = Spot()
         let mapDetailViewController = MapDetailViewController()
         
         let presenter = MapDetailPresenter(
@@ -91,7 +85,19 @@ class MapViewController: BaseViewController {
             $0.leading.equalToSuperview().offset(14.0)
             $0.trailing.equalToSuperview().offset(-14.0)
         }
+        
+        mapDetailViewController.sendEventToParent = { [weak self] in
+            self?.changeBottomSheet()
+        }
     }
+    
+    func changeBottomSheet() {
+        view.subviews.forEach { view in
+            view.removeFromSuperview()
+        }
+        addBottomSheetView()
+    }
+    
     func addBottomSheetView() {
         let mapService = MapService(networking: MapNetworking())
         // 1- Init bottomSheetVC
