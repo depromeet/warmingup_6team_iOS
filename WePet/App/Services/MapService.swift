@@ -9,11 +9,12 @@
 import UIKit
 
 typealias SpotParam = (distance: Int, size: Int, categoryId: Int?)
-typealias FavoriteParam = (id: Int?, placeId: String, deviceId: String)
+typealias FavoriteParam = (placeId: String, deviceId: String)
 protocol MapServiceType {
     func getCategories(_ completion: @escaping (Result<[Category], WepetError>) -> Void)
     func getSpots(location: Location, spotParam: SpotParam, _ completion: @escaping (Result<[Spot], WepetError>) -> Void)
     func getSpot(placeId: String?, location: Location?, _ completion: @escaping (Result<Spot, WepetError>) -> Void)
+    func setFavorite(placeId: String, favorite: Bool, _ completion: @escaping (Result<(), WepetError>) -> Void)
 }
 
 final class MapService: MapServiceType {
@@ -72,5 +73,40 @@ final class MapService: MapServiceType {
             ),
             completion: completion
         )
+    }
+
+    func setFavorite(placeId: String, favorite: Bool, _ completion: @escaping (Result<(), WepetError>) -> Void) {
+        guard let deviceId = self.deviceId else {
+            completion(.failure(.requestFailed))
+            return
+        }
+
+        if favorite {
+            postFavorite(favoriteParam: (placeId: placeId, deviceId: deviceId), completion)
+        } else {
+            deleteFavorite(placeId: placeId, deviceId: deviceId, completion)
+        }
+    }
+
+    func postFavorite(favoriteParam: FavoriteParam, _ completion: @escaping (Result<(), WepetError>) -> Void) {
+        networking.requestWithLog(.setFavorite(favoriteParam: favoriteParam)) { result in
+            switch result {
+            case .success:
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
+    func deleteFavorite(placeId: String, deviceId: String, _ completion: @escaping (Result<(), WepetError>) -> Void) {
+        networking.requestWithLog(.removeFavorite(deviceId: deviceId, placeId: placeId)) { result in
+            switch result {
+            case .success:
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 }

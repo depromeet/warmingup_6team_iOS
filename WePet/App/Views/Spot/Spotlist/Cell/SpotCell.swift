@@ -9,6 +9,10 @@
 import UIKit
 import Alamofire
 
+protocol SpotCellDelegate: AnyObject {
+    func spotCell(_ cell: SpotCell, didToggleFavorite spot: Spot)
+}
+
 final class SpotCell: BaseTableViewCell {
 
     // MARK: - Constants
@@ -36,7 +40,7 @@ final class SpotCell: BaseTableViewCell {
 
     private var thumbnailView: UIImageView!
     private var textStackView: UIStackView!
-    private var favortieButton: UIButton!
+    private var favoriteButton: UIButton!
     private var separatorView: UIView!
 
     // MARK: - Subviews(textStackView)
@@ -48,6 +52,11 @@ final class SpotCell: BaseTableViewCell {
 
     private var nameLabel: UILabel!
     private var distanceLabel: UILabel!
+
+    // MARK: - Properies
+
+    weak var delegate: SpotCellDelegate?
+    private var spot: Spot?
 
     override func setupSubviews() {
         self.clipsToBounds = true
@@ -64,9 +73,10 @@ final class SpotCell: BaseTableViewCell {
             $0.spacing = Metric.textStackViewSpacing
             contentView.addSubview($0)
         }
-        favortieButton = UIButton().also {
+        favoriteButton = UIButton().also {
             $0.setImage(UIImage(named: "ic_favorite_inactive"), for: .normal)
             $0.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: .horizontal)
+            $0.addTarget(self, action: #selector(didTapFavorite), for: .touchUpInside)
             contentView.addSubview($0)
         }
         nameStackView = UIStackView().also {
@@ -112,9 +122,9 @@ final class SpotCell: BaseTableViewCell {
         textStackView.snp.makeConstraints {
             $0.leading.equalTo(thumbnailView.snp.trailing).offset(Metric.textStackViewLeading)
             $0.centerY.equalTo(thumbnailView)
-            $0.trailing.lessThanOrEqualTo(favortieButton.snp.leading).offset(-Metric.favoriteTrailing)
+            $0.trailing.lessThanOrEqualTo(favoriteButton.snp.leading).offset(-Metric.favoriteTrailing)
         }
-        favortieButton.snp.makeConstraints {
+        favoriteButton.snp.makeConstraints {
             $0.top.equalToSuperview().offset(Metric.favoriteTop)
             $0.trailing.equalToSuperview().offset(-Metric.favoriteTrailing)
         }
@@ -129,6 +139,7 @@ final class SpotCell: BaseTableViewCell {
 
 extension SpotCell {
     func configure(spot: Spot?, isLast: Bool = false) {
+        self.spot = spot
         ImageLoader.image(for: spot?.photoUrl) { [weak self] image in
             self?.thumbnailView.image = image ?? UIImage(named: "sample")
         }
@@ -140,12 +151,21 @@ extension SpotCell {
             guard let distance = spot?.distance else { return }
             $0.text = "\(distance)m"
         }
-        favortieButton.let {
-            if spot?.wishList == true {
-                $0.setImage(UIImage(named: "ic_favorite_active"), for: .normal)
-            } else {
-                $0.setImage(UIImage(named: "ic_favorite_inactive"), for: .normal)
-            }
-        }
+        configureFavoriteImage(spot?.wishList == true)
+    }
+
+    @objc func didTapFavorite() {
+        guard let delegate = delegate else { return }
+        spot?.wishList?.toggle()
+
+        guard let spot = spot else { return }
+        delegate.spotCell(self, didToggleFavorite: spot)
+
+        configureFavoriteImage(spot.wishList == true)
+    }
+
+    func configureFavoriteImage(_ favorite: Bool) {
+        let image = favorite ? UIImage(named: "ic_favorite_active") : UIImage(named: "ic_favorite_inactive")
+        favoriteButton.setImage(image, for: .normal)
     }
 }
