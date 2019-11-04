@@ -12,6 +12,7 @@ protocol HomePresenterType {
     var spots: [Spot] { get }
     var selectedCategory: Category? { get }
     var currentLocation: Location? { get }
+    var categories: [Category] { get }
 
     func didVisit(_ location: Location)
     func didSelectCategory(_ category: Category)
