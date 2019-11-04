@@ -55,7 +55,7 @@ class BottomImageButton: UIControl {
     }()
     
     private lazy var imageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "bottomArrow"))
+        let imageView = UIImageView(image: UIImage(named: "list_bottomArrow"))
         imageView.isUserInteractionEnabled = true
         container.addSubview(imageView)
         return imageView

@@ -18,10 +18,55 @@ class MapViewController: BaseViewController {
     
     var presenter: MapPresenterType?
     
+    private lazy var dropView: UIButton = {
+        let button: UIButton = UIButton(type: .custom)
+        button.setImage(UIImage(named: "bottomArrow"), for: .normal)
+        button.setImage(UIImage(named: "bottomArrow"), for: .highlighted)
+        button.setTitle("300m", for: .normal)
+        button.setTitle("300m", for: .highlighted)
+        button.backgroundColor = UIColor(named: "black_#555559")
+        button.layer.cornerRadius = 17.0
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 15.0, weight: .semibold)
+        button.semanticContentAttribute = .forceRightToLeft
+        button.imageEdgeInsets = UIEdgeInsets(top: 0.0, left: 6.0, bottom: 0.0, right: -6.0)
+        button.addTarget(self, action: #selector(pressedBackButton), for: .touchUpInside)
+        view.addSubview(button)
+        return button
+    }()
+    
+    private var collectionLayout: UICollectionViewFlowLayout = {
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 7.0
+        layout.minimumInteritemSpacing = 0.0
+        layout.headerReferenceSize = .zero
+        layout.footerReferenceSize = .zero
+        layout.scrollDirection = .horizontal
+        layout.estimatedItemSize = CGSize(width: 100, height: 35)
+        return layout
+    }()
+    
+    private lazy var collectionView: UICollectionView = {
+        let size = CGSize(width: view.frame.width, height: view.frame.height)
+        let collectionViewFrame = CGRect(origin: .zero, size: size)
+        let collectionView = UICollectionView(frame: .zero,
+                                              collectionViewLayout: collectionLayout)
+        collectionView.backgroundColor = .clear
+        collectionView.scrollsToTop = false
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.isPagingEnabled = true
+        collectionView.contentInset = .zero
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: "CategoryCell")
+        view.addSubview(collectionView)
+        return collectionView
+    }()
+    
     private lazy var backButton: UIButton = {
         let button: UIButton = UIButton(type: .custom)
         button.setImage(UIImage(named: "arrow"), for: .normal)
-        button.setImage(UIImage(named: "arrow"), for: .normal)
+        button.setImage(UIImage(named: "arrow"), for: .highlighted)
         button.addTarget(self, action: #selector(pressedBackButton), for: .touchUpInside)
         view.addSubview(button)
         return button
@@ -30,7 +75,7 @@ class MapViewController: BaseViewController {
     private lazy var subtractionButton: UIButton = {
         let button: UIButton = UIButton(type: .custom)
         button.setImage(UIImage(named: "subtraction"), for: .normal)
-        button.setImage(UIImage(named: "subtraction"), for: .normal)
+        button.setImage(UIImage(named: "subtraction"), for: .highlighted)
         button.addTarget(self, action: #selector(pressedSubtractionButton), for: .touchUpInside)
         button.backgroundColor = .white
         view.addSubview(button)
@@ -40,7 +85,7 @@ class MapViewController: BaseViewController {
     private lazy var plusButton: UIButton = {
         let button: UIButton = UIButton(type: .custom)
         button.setImage(UIImage(named: "plus"), for: .normal)
-        button.setImage(UIImage(named: "plus"), for: .normal)
+        button.setImage(UIImage(named: "plus"), for: .highlighted)
         button.addTarget(self, action: #selector(pressedPlusButtonButton), for: .touchUpInside)
         button.backgroundColor = .white
         view.addSubview(button)
@@ -50,12 +95,13 @@ class MapViewController: BaseViewController {
     private lazy var compassButton: UIButton = {
         let button: UIButton = UIButton(type: .custom)
         button.setImage(UIImage(named: "compass"), for: .normal)
-        button.setImage(UIImage(named: "compass"), for: .normal)
+        button.setImage(UIImage(named: "compass"), for: .highlighted)
         button.addTarget(self, action: #selector(pressedCompassButtonButton), for: .touchUpInside)
         button.backgroundColor = .white
         view.addSubview(button)
         return button
     }()
+    
     
     // MARK: MapView
     private lazy var mapView: GMSMapView = {
@@ -79,8 +125,7 @@ class MapViewController: BaseViewController {
         marker1.icon = UIImage(named: "marker")
         marker1.map = mapView
     
-        
-    
+
         mapView.delegate = self
         view.addSubview(mapView)
         return mapView
@@ -105,6 +150,20 @@ class MapViewController: BaseViewController {
             $0.top.equalToSuperview().offset(50.0)
         }
         
+        dropView.snp.makeConstraints {
+            $0.leading.equalTo(backButton.snp.trailing).offset(16.0)
+            $0.centerY.equalTo(backButton)
+            $0.width.equalTo(79.0)
+            $0.height.equalTo(35.0)
+        }
+        
+        collectionView.snp.makeConstraints {
+            $0.leading.equalTo(dropView.snp.trailing).offset(30.0)
+            $0.trailing.equalToSuperview()
+            $0.centerY.equalTo(dropView)
+            $0.height.equalTo(35.0)
+        }
+        
         subtractionButton.snp.makeConstraints {
             $0.bottom.equalTo(view.snp.centerY)
             $0.trailing.equalToSuperview().offset(-21.0)
@@ -122,7 +181,6 @@ class MapViewController: BaseViewController {
             $0.trailing.equalToSuperview().offset(-21.0)
             $0.width.height.equalTo(35.0)
         }
-
     }
     
     func addBottomInfoView() {
@@ -231,4 +289,20 @@ extension MapViewController: MapViewControllerType {
     func reload() {
         
     }
+}
+
+extension MapViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as? CategoryCell else {
+            return UICollectionViewCell()
+        }
+        cell.cellData = CellData(content: "테스트중입니다", isSelect: false)
+        return cell
+    }
+    
+    
 }

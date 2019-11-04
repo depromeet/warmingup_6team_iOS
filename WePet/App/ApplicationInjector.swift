@@ -48,7 +48,7 @@ struct ApplicationInjector {
     }
     
     static func configureMaps() {
-//        GMSServices.provideAPIKey("AIzaSyDpdG8O6veYWC-nh8lGWbAQaDpV7h8zMiM")
+        GMSServices.provideAPIKey("AIzaSyDpdG8O6veYWC-nh8lGWbAQaDpV7h8zMiM")
     }
     
     static func configureAppearance() {
