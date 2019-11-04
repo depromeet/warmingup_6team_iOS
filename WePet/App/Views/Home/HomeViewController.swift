@@ -212,16 +212,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
 
         guard let spot = presenter?.spots[indexPath.row] else { return }
-        let mapService = MapService(networking: MapNetworking())
-        let view = SpotDetailViewController.controllerFromStoryboard("SpotDetail")
-        let presenter = SpotDetailPresenter(
-            view: view,
-            mapService: mapService,
-            spot: spot,
-            location: self.presenter?.currentLocation
-        )
-        view.presenter = presenter
-        self.navigationController?.pushViewController(view, animated: true)
+        navigator?.show(.spotDetail(spot: spot, location: presenter?.currentLocation), transition: .push)
     }
 }
 
@@ -265,15 +256,8 @@ extension HomeViewController {
     }
 
     @objc func gotoMap() {
-        let mapService = MapService(networking: MapNetworking())
-        let view = MapViewController()
-        let presenter = MapPresenter(
-            view: view,
-            mapService: mapService,
-            categories: []
-        )
-        view.presenter = presenter
-        self.navigationController?.pushViewController(view, animated: true)
+        guard let categories = presenter?.categories else { return }
+        navigator?.show(.map(categories: categories), transition: .push)
     }
 
     func showCategoryContainer() {
