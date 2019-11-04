@@ -15,7 +15,7 @@ enum WeatherAPI {
 
 extension WeatherAPI: TargetType {
     var baseURL: URL {
-        return URL(string: "http://ec2-54-180-149-69.ap-northeast-2.compute.amazonaws.com:8080/api")!
+        return URL(string: "http://ec2-54-180-149-69.ap-northeast-2.compute.amazonaws.com/api")!
     }
 
     var path: String {

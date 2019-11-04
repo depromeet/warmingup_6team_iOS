@@ -189,6 +189,12 @@ extension HomeViewController: CategoryTabDelegate {
     }
 }
 
+extension HomeViewController: SpotCellDelegate {
+    func spotCell(_ cell: SpotCell, didToggleFavorite spot: Spot) {
+        presenter?.didToggleFavorite(spot)
+    }
+}
+
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter?.spots.count ?? 0
@@ -198,6 +204,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SpotCell", for: indexPath) as! SpotCell
         let isLast = presenter?.spots.count == indexPath.row + 1
         cell.configure(spot: presenter?.spots[indexPath.row], isLast: isLast)
+        cell.delegate = self
         return cell
     }
 
@@ -210,7 +217,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         let presenter = SpotDetailPresenter(
             view: view,
             mapService: mapService,
-            spot: spot
+            spot: spot,
+            location: self.presenter?.currentLocation
         )
         view.presenter = presenter
         self.navigationController?.pushViewController(view, animated: true)

@@ -12,10 +12,11 @@ struct Spot: Codable {
     var placeId: String? // google placeId
     var latitude: Double?
     var longitude: Double?
-    var distance: String?
+    var distance: Int?
+    var address: String?
+    var wishList: Bool?
 
     // detail api
     var homePage: String?
-    var address: String?
     var phoneNumber: String?
 }
