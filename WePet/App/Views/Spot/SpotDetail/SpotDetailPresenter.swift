@@ -11,6 +11,7 @@ import Foundation
 protocol SpotDetailPresenterType {
     var spot: Spot { get }
     func viewDidLoad()
+    func didTapFavorite()
 }
 
 final class SpotDetailPresenter: SpotDetailPresenterType {
@@ -48,5 +49,26 @@ extension SpotDetailPresenter {
             }
         }
     }
+
+    func didTapFavorite() {
+        guard let placeId = spot.placeId else { return }
+        toggleFavorite()
+        mapService.setFavorite(placeId: placeId, favorite: spot.wishList == true) { [weak self] result in
+            switch result {
+            case .success: break
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self?.toggleFavorite()
+                }
+                log.error(error)
+            }
+        }
+    }
 }
 
+private extension SpotDetailPresenter {
+    func toggleFavorite() {
+        spot.wishList?.toggle()
+        view?.configureFavoriteImage(spot.wishList == true)
+    }
+}

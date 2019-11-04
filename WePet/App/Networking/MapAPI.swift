@@ -14,11 +14,12 @@ enum MapAPI {
     case spot(latitude: Double, longitude: Double, placeId: String, deviceId: String)
     case spots(latitude: Double, longitude: Double, spotParam: SpotParam, deviceId: String)
     case setFavorite(favoriteParam: FavoriteParam)
+    case removeFavorite(deviceId: String, placeId: String)
 }
 
 extension MapAPI: TargetType {
     var baseURL: URL {
-        return URL(string: "http://ec2-54-180-149-69.ap-northeast-2.compute.amazonaws.com:8080/api")!
+        return URL(string: "http://ec2-54-180-149-69.ap-northeast-2.compute.amazonaws.com/api")!
     }
 
     var path: String {
@@ -31,6 +32,8 @@ extension MapAPI: TargetType {
             return "location/\(latitude)/\(longitude)"
         case .setFavorite:
             return "wishList"
+        case .removeFavorite(let deviceId, let placeId):
+            return "wishList/\(deviceId)/\(placeId)"
         }
     }
 
@@ -38,6 +41,8 @@ extension MapAPI: TargetType {
         switch self {
         case .setFavorite:
             return .post
+        case .removeFavorite:
+            return .delete
         default:
             return .get
         }
@@ -96,9 +101,6 @@ private extension MapAPI {
         var parameters = [String: Any]()
         parameters["placeId"] = favoriteParam.placeId
         parameters["deviceId"] = favoriteParam.deviceId
-        if let wishListId = favoriteParam.id {
-            parameters["wishListId"] = wishListId
-        }
         return parameters
     }
 }

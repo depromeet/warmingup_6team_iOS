@@ -10,6 +10,7 @@ import UIKit
 
 protocol SpotDetailViewControllerType: AnyObject {
     func configureSpot(_ spot: Spot)
+    func configureFavoriteImage(_ favorite: Bool)
 }
 
 final class SpotDetailViewController: BaseViewController, SpotDetailViewControllerType {
@@ -51,6 +52,16 @@ final class SpotDetailViewController: BaseViewController, SpotDetailViewControll
             self.phoneNumberStackView.isHidden = spot.phoneNumber == nil
             self.homePageStackView.isHidden = spot.homePage == nil
         }
+        configureFavoriteImage(spot.wishList == true)
+    }
+
+    func configureFavoriteImage(_ favorite: Bool) {
+        let image = favorite ? UIImage(named: "ic_favorite_active") : UIImage(named: "ic_favorite_inactive")
+        favoriteButton.setImage(image, for: .normal)
+    }
+
+    @IBAction func didTapFavorite(_ sender: Any) {
+        presenter?.didTapFavorite()
     }
 
     @IBAction func didTapBack(_ sender: Any) {

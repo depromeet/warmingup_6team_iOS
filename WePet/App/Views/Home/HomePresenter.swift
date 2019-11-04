@@ -15,6 +15,7 @@ protocol HomePresenterType {
 
     func didVisit(_ location: Location)
     func didSelectCategory(_ category: Category)
+    func didToggleFavorite(_ spot: Spot)
 }
 
 final class HomePresenter: HomePresenterType {
@@ -51,6 +52,18 @@ extension HomePresenter {
     func didSelectCategory(_ category: Category) {
         self.selectedCategory = category
         fetchSpots()
+    }
+
+    func didToggleFavorite(_ spot: Spot) {
+        guard let placeId = spot.placeId, let favorite = spot.wishList else { return }
+        mapService.setFavorite(placeId: placeId, favorite: favorite) { result in
+            switch result {
+            case .success:
+                break
+            case .failure(let error):
+                log.warning(error)
+            }
+        }
     }
 }
 
