@@ -112,8 +112,8 @@ final class HomeViewController: BaseViewController {
             $0.isScrollEnabled = false
             $0.rowHeight = UITableView.automaticDimension
             $0.estimatedRowHeight = UITableView.automaticDimension
-            $0.layer.borderColor = UIColor(named: "gray_#BEBEBE")?.cgColor
-            $0.layer.borderWidth = 1
+            $0.layer.borderColor = UIColor(named: "white_#EFEFEF")?.cgColor
+            $0.layer.borderWidth = 1.5
             $0.layer.cornerRadius = 10
             categoryContainerView.addArrangedSubview($0)
         }
@@ -203,6 +203,17 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+
+        guard let spot = presenter?.spots[indexPath.row] else { return }
+        let mapService = MapService(networking: MapNetworking())
+        let view = SpotDetailViewController.controllerFromStoryboard("SpotDetail")
+        let presenter = SpotDetailPresenter(
+            view: view,
+            mapService: mapService,
+            spot: spot
+        )
+        view.presenter = presenter
+        self.navigationController?.pushViewController(view, animated: true)
     }
 }
 
@@ -213,10 +224,10 @@ extension HomeViewController: CLLocationManagerDelegate {
         }
     }
 
-    func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = Location(
-            latitude: visit.coordinate.latitude,
-            longitude: visit.coordinate.longitude
+            latitude: manager.location?.coordinate.latitude,
+            longitude: manager.location?.coordinate.longitude
         )
         presenter?.didVisit(location)
     }
@@ -238,10 +249,10 @@ extension HomeViewController {
     }
 
     func startMonitoringLocation() {
-        #if DEBUG
+        #if targetEnvironment(simulator)
             presenter?.didVisit(Location.startupHub)
         #else
-            locationManager.startMonitoringVisits()
+            locationManager.startUpdatingLocation()
         #endif
     }
 

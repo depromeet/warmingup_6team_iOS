@@ -64,7 +64,9 @@ class MapViewController: BaseViewController {
     }
     
     func addBottomInfoView() {
-
+//        guard let spot = presenter?.spots.first else {
+//            return
+//        }
         let spot: Spot = Spot()
         let mapDetailViewController = MapDetailViewController()
         
