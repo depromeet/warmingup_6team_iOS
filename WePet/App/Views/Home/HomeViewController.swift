@@ -210,7 +210,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         let presenter = SpotDetailPresenter(
             view: view,
             mapService: mapService,
-            spot: spot
+            spot: spot,
+            location: self.presenter?.currentLocation
         )
         view.presenter = presenter
         self.navigationController?.pushViewController(view, animated: true)

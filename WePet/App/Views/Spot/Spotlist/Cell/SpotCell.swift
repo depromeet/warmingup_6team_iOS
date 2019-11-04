@@ -66,6 +66,7 @@ final class SpotCell: BaseTableViewCell {
         }
         favortieButton = UIButton().also {
             $0.setImage(UIImage(named: "ic_favorite_inactive"), for: .normal)
+            $0.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: .horizontal)
             contentView.addSubview($0)
         }
         nameStackView = UIStackView().also {
@@ -133,8 +134,18 @@ extension SpotCell {
         }
         thumbnailView.layer.cornerRadius = Metric.thumbnailSize / 2
         nameLabel.text = spot?.name
-        distanceLabel.text = "125m"
-        addressLabel.text = "서울 종로구 대학로8길 45-2"
+        addressLabel.text = spot?.address
         separatorView.isHidden = isLast
+        distanceLabel.let {
+            guard let distance = spot?.distance else { return }
+            $0.text = "\(distance)m"
+        }
+        favortieButton.let {
+            if spot?.wishList == true {
+                $0.setImage(UIImage(named: "ic_favorite_active"), for: .normal)
+            } else {
+                $0.setImage(UIImage(named: "ic_favorite_inactive"), for: .normal)
+            }
+        }
     }
 }

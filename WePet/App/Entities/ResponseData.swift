@@ -12,3 +12,7 @@ class ResponseData<T: Codable>: Codable {
     var message: String?
     var data: T?
 }
+
+class Content<T: Codable>: Codable {
+    var content: T?
+}

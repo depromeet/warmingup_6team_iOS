@@ -32,12 +32,6 @@ final class SpotDetailViewController: BaseViewController, SpotDetailViewControll
 
     var presenter: SpotDetailPresenterType?
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter?.viewDidLoad()
@@ -48,7 +42,7 @@ final class SpotDetailViewController: BaseViewController, SpotDetailViewControll
             self?.thumbnailView.image = image ?? UIImage(named: "sample")
         }
         nameLabel.text = spot.name
-        distanceLabel.text = spot.distance ?? "125m"
+        distanceLabel.text = "\(spot.distance ?? 100)m"
         addressLabel.text = spot.address
         phoneNumberLabel.text = spot.phoneNumber
         homePageLabel.text = spot.homePage

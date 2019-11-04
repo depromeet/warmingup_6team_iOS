@@ -10,5 +10,5 @@ struct Location: Codable {
     var latitude: Double?
     var longitude: Double?
 
-    static let startupHub = Location(latitude: 37.547095, longitude: 126.950077)
+    static let startupHub = Location(latitude: 37.394437, longitude: 127.1098543)
 }

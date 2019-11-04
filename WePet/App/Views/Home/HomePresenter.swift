@@ -11,6 +11,7 @@ import Foundation
 protocol HomePresenterType {
     var spots: [Spot] { get }
     var selectedCategory: Category? { get }
+    var currentLocation: Location? { get }
 
     func didVisit(_ location: Location)
     func didSelectCategory(_ category: Category)
@@ -25,8 +26,8 @@ final class HomePresenter: HomePresenterType {
     private(set) var categories: [Category] = []
     private(set) var selectedCategory: Category?
     private(set) var spots: [Spot] = []
+    private(set) var currentLocation: Location?
     private var isLoaded = false
-    private var currentLocation: Location?
 
     init(
         view: HomeViewControllerType,
@@ -114,7 +115,7 @@ private extension HomePresenter {
 
     func fetchSpots() {
         guard let location = currentLocation else { return }
-        let spotParam = (distance: 1000, size: 3, categoryId: selectedCategory?.id)
+        let spotParam = (distance: 3000, size: 3, categoryId: selectedCategory?.id)
         mapService.getSpots(location: location, spotParam: spotParam) { [weak self] result in
             switch result {
             case .success(let spots):
