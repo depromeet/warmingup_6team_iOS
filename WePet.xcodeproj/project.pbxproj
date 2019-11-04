@@ -49,6 +49,7 @@
 		EE294F0D236B564100BC77A7 /* MapDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE294F0C236B564100BC77A7 /* MapDetailPresenter.swift */; };
 		EE4B79CA2369881000D1D29D /* BottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4B79C92369881000D1D29D /* BottomSheetViewController.swift */; };
 		EE4B79CC236997E600D1D29D /* BottomSheetPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4B79CB236997E600D1D29D /* BottomSheetPresenter.swift */; };
+		EE7B3F9F2370246200D41042 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B3F9E2370246200D41042 /* CategoryCell.swift */; };
 		EEEA7C6F236D5B46008159BA /* BottomImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEEA7C6E236D5B46008159BA /* BottomImageButton.swift */; };
 		EEEA7C74236D5C88008159BA /* TapAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEEA7C73236D5C88008159BA /* TapAnimation.swift */; };
 /* End PBXBuildFile section */
@@ -100,6 +101,7 @@
 		EE294F0C236B564100BC77A7 /* MapDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDetailPresenter.swift; sourceTree = "<group>"; };
 		EE4B79C92369881000D1D29D /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetViewController.swift; sourceTree = "<group>"; };
 		EE4B79CB236997E600D1D29D /* BottomSheetPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetPresenter.swift; sourceTree = "<group>"; };
+		EE7B3F9E2370246200D41042 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		EEEA7C6E236D5B46008159BA /* BottomImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomImageButton.swift; sourceTree = "<group>"; };
 		EEEA7C73236D5C88008159BA /* TapAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapAnimation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -209,6 +211,7 @@
 		2D7FA2C023641FEC00E7D3BD /* Map */ = {
 			isa = PBXGroup;
 			children = (
+				EE7B3F9D2370243700D41042 /* Cell */,
 				2D7FA2CE236422ED00E7D3BD /* MapPresenter.swift */,
 				2D7FA2C22364207A00E7D3BD /* MapViewController.swift */,
 			);
@@ -410,6 +413,14 @@
 			path = BottomSheet;
 			sourceTree = "<group>";
 		};
+		EE7B3F9D2370243700D41042 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				EE7B3F9E2370246200D41042 /* CategoryCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		EEEA7C6D236D5AF8008159BA /* Button */ = {
 			isa = PBXGroup;
 			children = (
@@ -579,6 +590,7 @@
 				2D0E58BF2351B55A008F82BE /* AppDelegate.swift in Sources */,
 				2D95EF632366FCB9009E0ADE /* Location.swift in Sources */,
 				EE4B79CC236997E600D1D29D /* BottomSheetPresenter.swift in Sources */,
+				EE7B3F9F2370246200D41042 /* CategoryCell.swift in Sources */,
 				2D96013A2354C34700B76984 /* WeatherService.swift in Sources */,
 				2D9601352354C1E400B76984 /* MapAPI.swift in Sources */,
 				2D4D61E223646BD00090DB52 /* SpotlistViewController.swift in Sources */,
