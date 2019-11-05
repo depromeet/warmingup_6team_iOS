@@ -60,14 +60,14 @@ class BottomSheetViewController: BaseViewController {
     }
     
     func prepareBackgroundView(){
-        let blurEffect = UIBlurEffect.init(style: .dark)
+        let blurEffect = UIBlurEffect.init(style: .light)
         let visualEffect = UIVisualEffectView.init(effect: blurEffect)
         let bluredView = UIVisualEffectView.init(effect: blurEffect)
         bluredView.contentView.addSubview(visualEffect)
 
         visualEffect.frame = UIScreen.main.bounds
         bluredView.frame = UIScreen.main.bounds
-
+        bluredView.layer.cornerRadius = 10.0
         view.insertSubview(bluredView, at: 0)
     }
     
@@ -75,7 +75,8 @@ class BottomSheetViewController: BaseViewController {
         super.viewDidLoad()
         configurationConstarint()
         presenter?.viewDidLoad()
-        view.backgroundColor = .green
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 10.0
         let gesture = UIPanGestureRecognizer.init(target: self, action: #selector(panGesture))
         view.addGestureRecognizer(gesture)
     }

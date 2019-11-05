@@ -108,27 +108,14 @@ class MapViewController: BaseViewController {
     
     // MARK: MapView
     private lazy var mapView: GMSMapView = {
-        let camera = GMSCameraPosition.camera(withLatitude: 37.5468225, longitude: 126.9478771, zoom: 15.0)
+
+        let camera = GMSCameraPosition.camera(withLatitude: Location.startupHub.latitude ?? 0.0, longitude: Location.startupHub.longitude ?? 0.0, zoom: 15.0)
         let mapView = GMSMapView(frame: .zero, camera: camera)
         mapView.mapType = .normal
         mapView.setMinZoom(5.0, maxZoom: 20.0)
         mapView.settings.zoomGestures = true
         mapView.settings.setAllGesturesEnabled(true)
         mapView.settings.compassButton = true
-
-        let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: 37.5468225, longitude: 126.9478771)
-        marker.title = "서울창업허브"
-        marker.icon = UIImage(named: "marker")
-        marker.map = mapView
-        
-        let marker1 = GMSMarker()
-        marker1.position = CLLocationCoordinate2D(latitude: 37.54322, longitude: 126.9493873)
-        marker1.title = "공덕역"
-        marker1.icon = UIImage(named: "marker")
-        marker1.map = mapView
-    
-
         mapView.delegate = self
         view.addSubview(mapView)
         return mapView
@@ -136,7 +123,6 @@ class MapViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .green
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
         configurationConstarint()
         presenter?.didVisit(Location.startupHub)
@@ -207,7 +193,7 @@ class MapViewController: BaseViewController {
             $0.leading.equalToSuperview().offset(14.0)
             $0.trailing.equalToSuperview().offset(-14.0)
         }
-        
+        mapDetailViewController.view.layer.cornerRadius = 10.0
         mapDetailViewController.sendEventToParent = { [weak self] in
             self?.changeBottomSheet()
         }
@@ -240,11 +226,12 @@ class MapViewController: BaseViewController {
         addChild(bottomSheetViewController)
         view.addSubview(bottomSheetViewController.view)
         bottomSheetViewController.didMove(toParent: self)
-
+        
         // 3- Adjust bottomSheet frame and initial position.
         let height = view.frame.height
         let width  = view.frame.width
         bottomSheetViewController.view.frame = CGRect(x: 0, y: self.view.frame.maxY, width: width, height: height)
+        bottomSheetViewController.view.layer.cornerRadius = 10.0
     }
     
     @objc func pressedBackButton() {
@@ -269,6 +256,7 @@ class MapViewController: BaseViewController {
     
     @objc func pressedDropButton() {
     }
+    
 }
 
 extension MapViewController: GMSMapViewDelegate {
@@ -313,6 +301,26 @@ extension MapViewController: CLLocationManagerDelegate {
 extension MapViewController: MapViewControllerType {
     func reload() {
         addBottomSheetView()
+        configurationMapmarker()
+    }
+    
+    func configurationMapmarker() {
+        guard let spots = presenter?.spots else {
+            return
+        }
+        spots.forEach({ spot in
+            guard
+                let latitude = spot.latitude,
+                let longitude = spot.longitude else {
+                    return
+            }
+
+            let marker = GMSMarker()
+            marker.position = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            marker.title = spot.name
+            marker.icon = UIImage(named: "marker")
+            marker.map = mapView
+        })
     }
 }
 
