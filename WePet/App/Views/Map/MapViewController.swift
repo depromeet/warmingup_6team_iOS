@@ -9,6 +9,7 @@
 import UIKit
 import GoogleMaps
 import SnapKit
+import CoreLocation
 
 protocol MapViewControllerType: AnyObject {
     func reload()
@@ -17,6 +18,8 @@ protocol MapViewControllerType: AnyObject {
 class MapViewController: BaseViewController {
     
     var presenter: MapPresenterType?
+    let bottomSheetViewController = BottomSheetViewController()
+    let mapDetailViewController = MapDetailViewController()
     
     private lazy var dropView: UIButton = {
         let button: UIButton = UIButton(type: .custom)
@@ -29,7 +32,7 @@ class MapViewController: BaseViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 15.0, weight: .semibold)
         button.semanticContentAttribute = .forceRightToLeft
         button.imageEdgeInsets = UIEdgeInsets(top: 0.0, left: 6.0, bottom: 0.0, right: -6.0)
-        button.addTarget(self, action: #selector(pressedBackButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(pressedDropButton), for: .touchUpInside)
         view.addSubview(button)
         return button
     }()
@@ -41,7 +44,7 @@ class MapViewController: BaseViewController {
         layout.headerReferenceSize = .zero
         layout.footerReferenceSize = .zero
         layout.scrollDirection = .horizontal
-        layout.estimatedItemSize = CGSize(width: 100, height: 35)
+        layout.estimatedItemSize = CGSize(width: 200, height: 35)
         return layout
     }()
     
@@ -136,7 +139,8 @@ class MapViewController: BaseViewController {
         view.backgroundColor = .green
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
         configurationConstarint()
-        addBottomSheetView()
+        presenter?.didVisit(Location.startupHub)
+//        addBottomSheetView()
 //        addBottomInfoView()
     }
     
@@ -158,7 +162,7 @@ class MapViewController: BaseViewController {
         }
         
         collectionView.snp.makeConstraints {
-            $0.leading.equalTo(dropView.snp.trailing).offset(30.0)
+            $0.leading.equalTo(dropView.snp.trailing).offset(24.0)
             $0.trailing.equalToSuperview()
             $0.centerY.equalTo(dropView)
             $0.height.equalTo(35.0)
@@ -184,11 +188,7 @@ class MapViewController: BaseViewController {
     }
     
     func addBottomInfoView() {
-//        guard let spot = presenter?.spots.first else {
-//            return
-//        }
         let spot: Spot = Spot()
-        let mapDetailViewController = MapDetailViewController()
         
         let presenter = MapDetailPresenter(
             view: mapDetailViewController,
@@ -223,22 +223,28 @@ class MapViewController: BaseViewController {
     func addBottomSheetView() {
         let mapService = MapService(networking: MapNetworking())
         // 1- Init bottomSheetVC
-        let bottomSheetVC = BottomSheetViewController()
-        let presenter = BottomSheetPresenter(
-            view: bottomSheetVC,
+        guard
+            let spots = presenter?.spots,
+            let categories = presenter?.categories
+            else {
+            return
+        }
+        let bottomPresenter = BottomSheetPresenter(
+            view: bottomSheetViewController,
             mapService: mapService,
-            categories: []
+            categories: categories,
+            spots: spots
         )
-        bottomSheetVC.presenter = presenter
+        bottomSheetViewController.presenter = bottomPresenter
         // 2- Add bottomSheetVC as a child view
-        addChild(bottomSheetVC)
-        view.addSubview(bottomSheetVC.view)
-        bottomSheetVC.didMove(toParent: self)
+        addChild(bottomSheetViewController)
+        view.addSubview(bottomSheetViewController.view)
+        bottomSheetViewController.didMove(toParent: self)
 
         // 3- Adjust bottomSheet frame and initial position.
         let height = view.frame.height
         let width  = view.frame.width
-        bottomSheetVC.view.frame = CGRect(x: 0, y: self.view.frame.maxY, width: width, height: height)
+        bottomSheetViewController.view.frame = CGRect(x: 0, y: self.view.frame.maxY, width: width, height: height)
     }
     
     @objc func pressedBackButton() {
@@ -259,6 +265,9 @@ class MapViewController: BaseViewController {
     
     @objc func pressedCompassButtonButton() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func pressedDropButton() {
     }
 }
 
@@ -285,22 +294,46 @@ extension MapViewController: GMSMapViewDelegate {
     }
 }
 
+extension MapViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedAlways || status == .authorizedWhenInUse {
+//            startMonitoringLocation()
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let location = Location(
+            latitude: manager.location?.coordinate.latitude,
+            longitude: manager.location?.coordinate.longitude
+        )
+        presenter?.didVisit(location)
+    }
+}
+
 extension MapViewController: MapViewControllerType {
     func reload() {
-        
+        addBottomSheetView()
     }
 }
 
 extension MapViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return presenter?.categories.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as? CategoryCell else {
+        guard
+            let categories = presenter?.categories,
+            let selectedCategory = presenter?.selectedCategory,
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as? CategoryCell else {
             return UICollectionViewCell()
         }
-        cell.cellData = CellData(content: "테스트중입니다", isSelect: false)
+        if selectedCategory.id == categories[indexPath.row].id {
+            cell.cellData = CellData(content: categories[indexPath.row].displayName ?? "", isSelect: true)
+        } else {
+            cell.cellData = CellData(content: categories[indexPath.row].displayName ?? "", isSelect: false)
+        }
+    
         return cell
     }
     
