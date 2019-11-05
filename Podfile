@@ -15,4 +15,5 @@ target 'WePet' do
   pod 'SnapKit'
   pod 'GoogleMaps'
   pod 'GooglePlaces'
+  pod 'DropDown'
 end
