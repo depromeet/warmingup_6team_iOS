@@ -21,6 +21,7 @@ class MapViewController: BaseViewController {
     private let bottomSheetViewController = BottomSheetViewController()
     private let mapDetailViewController = MapDetailViewController()
     private var previousMarker: GMSMarker?
+    private let locationManager = CLLocationManager()
     
     private lazy var dropView: UIButton = {
         let button: UIButton = UIButton(type: .custom)
@@ -109,7 +110,6 @@ class MapViewController: BaseViewController {
     
     // MARK: MapView
     private lazy var mapView: GMSMapView = {
-
         let camera = GMSCameraPosition.camera(withLatitude: Location.startupHub.latitude ?? 0.0, longitude: Location.startupHub.longitude ?? 0.0, zoom: 15.0)
         let mapView = GMSMapView(frame: .zero, camera: camera)
         mapView.mapType = .normal
@@ -125,8 +125,8 @@ class MapViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        locationManager.delegate = self
         configurationConstarint()
-        presenter?.didVisit(Location.startupHub)
         configurationInitalView()
     }
     
@@ -259,10 +259,18 @@ class MapViewController: BaseViewController {
     }
     
     @objc func pressedCompassButtonButton() {
-        navigationController?.popViewController(animated: true)
+        startMonitoringLocation()
     }
     
     @objc func pressedDropButton() {
+    }
+    
+    func startMonitoringLocation() {
+        #if targetEnvironment(simulator)
+            presenter?.didVisit(Location.startupHub)
+        #else
+            locationManager.startUpdatingLocation()
+        #endif
     }
     
 }
@@ -301,7 +309,7 @@ extension MapViewController: GMSMapViewDelegate {
 extension MapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedAlways || status == .authorizedWhenInUse {
-//            startMonitoringLocation()
+            startMonitoringLocation()
         }
     }
 
@@ -310,7 +318,11 @@ extension MapViewController: CLLocationManagerDelegate {
             latitude: manager.location?.coordinate.latitude,
             longitude: manager.location?.coordinate.longitude
         )
+        let currentZoom = mapView.camera.zoom
+        let camera = GMSCameraPosition(latitude: location.latitude ?? 0.0, longitude: location.longitude ?? 0.0, zoom: currentZoom)
+        mapView.camera = camera
         presenter?.didVisit(location)
+        locationManager.stopUpdatingLocation()
     }
 }
 
