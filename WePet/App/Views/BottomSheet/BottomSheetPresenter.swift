@@ -16,18 +16,20 @@ protocol BottomSheetPresenterType {
 final class BottomSheetPresenter: BottomSheetPresenterType {
     private weak var view: BottomSheetViewControllerType?
     private var mapService: MapServiceType
-    private var categories: [Category]
+    private var categories: [Category]?
 
     private(set) var spots: [Spot] = []
 
     init(
         view: BottomSheetViewControllerType,
         mapService: MapServiceType,
-        categories: [Category]
+        categories: [Category]?,
+        spots: [Spot]
     ) {
         self.view = view
         self.mapService = mapService
         self.categories = categories
+        self.spots = spots
     }
 }
 

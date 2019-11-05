@@ -52,6 +52,9 @@
 		EE294F0D236B564100BC77A7 /* MapDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE294F0C236B564100BC77A7 /* MapDetailPresenter.swift */; };
 		EE4B79CA2369881000D1D29D /* BottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4B79C92369881000D1D29D /* BottomSheetViewController.swift */; };
 		EE4B79CC236997E600D1D29D /* BottomSheetPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4B79CB236997E600D1D29D /* BottomSheetPresenter.swift */; };
+		EE7B3F9F2370246200D41042 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B3F9E2370246200D41042 /* CategoryCell.swift */; };
+		EEEA7C6F236D5B46008159BA /* BottomImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEEA7C6E236D5B46008159BA /* BottomImageButton.swift */; };
+		EEEA7C74236D5C88008159BA /* TapAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEEA7C73236D5C88008159BA /* TapAnimation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -106,6 +109,9 @@
 		EE294F0C236B564100BC77A7 /* MapDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDetailPresenter.swift; sourceTree = "<group>"; };
 		EE4B79C92369881000D1D29D /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetViewController.swift; sourceTree = "<group>"; };
 		EE4B79CB236997E600D1D29D /* BottomSheetPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetPresenter.swift; sourceTree = "<group>"; };
+		EE7B3F9E2370246200D41042 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
+		EEEA7C6E236D5B46008159BA /* BottomImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomImageButton.swift; sourceTree = "<group>"; };
+		EEEA7C73236D5C88008159BA /* TapAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapAnimation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,6 +221,7 @@
 		2D7FA2C023641FEC00E7D3BD /* Map */ = {
 			isa = PBXGroup;
 			children = (
+				EE7B3F9D2370243700D41042 /* Cell */,
 				2D7FA2CE236422ED00E7D3BD /* MapPresenter.swift */,
 				2D7FA2C22364207A00E7D3BD /* MapViewController.swift */,
 			);
@@ -319,6 +326,8 @@
 		2D96012F2354C0AB00B76984 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				EEEA7C72236D5C6E008159BA /* Animation */,
+				EEEA7C6D236D5AF8008159BA /* Button */,
 				2D4D61E0236469520090DB52 /* Common */,
 				2D7FA2D02364231C00E7D3BD /* Base */,
 				2D7FA2C6236420CC00E7D3BD /* Launch */,
@@ -431,6 +440,30 @@
 				EE4B79CB236997E600D1D29D /* BottomSheetPresenter.swift */,
 			);
 			path = BottomSheet;
+			sourceTree = "<group>";
+		};
+		EE7B3F9D2370243700D41042 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				EE7B3F9E2370246200D41042 /* CategoryCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		EEEA7C6D236D5AF8008159BA /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				EEEA7C6E236D5B46008159BA /* BottomImageButton.swift */,
+			);
+			path = Button;
+			sourceTree = "<group>";
+		};
+		EEEA7C72236D5C6E008159BA /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				EEEA7C73236D5C88008159BA /* TapAnimation.swift */,
+			);
+			path = Animation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -583,9 +616,11 @@
 				EE4B79CA2369881000D1D29D /* BottomSheetViewController.swift in Sources */,
 				2D7FA2C32364207A00E7D3BD /* MapViewController.swift in Sources */,
 				2D9D42E52354ED2A002B4534 /* ApplicationInjector.swift in Sources */,
+				EEEA7C74236D5C88008159BA /* TapAnimation.swift in Sources */,
 				2D0E58BF2351B55A008F82BE /* AppDelegate.swift in Sources */,
 				2D95EF632366FCB9009E0ADE /* Location.swift in Sources */,
 				EE4B79CC236997E600D1D29D /* BottomSheetPresenter.swift in Sources */,
+				EE7B3F9F2370246200D41042 /* CategoryCell.swift in Sources */,
 				2D96013A2354C34700B76984 /* WeatherService.swift in Sources */,
 				2D9601352354C1E400B76984 /* MapAPI.swift in Sources */,
 				2D4D61E223646BD00090DB52 /* SpotlistViewController.swift in Sources */,
@@ -598,6 +633,7 @@
 				EE294F08236B468E00BC77A7 /* MapDetailViewController.swift in Sources */,
 				2D9D42DC2354D1BB002B4534 /* Spot.swift in Sources */,
 				2D4D61EB236471F60090DB52 /* SpotCell.swift in Sources */,
+				EEEA7C6F236D5B46008159BA /* BottomImageButton.swift in Sources */,
 				2D4D61D1236429EB0090DB52 /* Int+Additions.swift in Sources */,
 				2D95EF6523671A2E009E0ADE /* ResponseData.swift in Sources */,
 				2DD4A02D236D58BD002BF6B5 /* SpotDetailPresenter.swift in Sources */,

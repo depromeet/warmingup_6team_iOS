@@ -16,7 +16,13 @@ protocol BottomSheetViewControllerType: AnyObject {
 
 class BottomSheetViewController: BaseViewController {
 
-    var presenter: BottomSheetPresenterType?
+    var presenter: BottomSheetPresenterType? {
+        didSet {
+            tableView.reloadData()
+            configurationIntialHeight()
+            bottomView.alpha = 0
+        }
+    }
     
     private lazy var tableView: UITableView = {
         let tableView: UITableView = UITableView()
@@ -60,14 +66,14 @@ class BottomSheetViewController: BaseViewController {
     }
     
     func prepareBackgroundView(){
-        let blurEffect = UIBlurEffect.init(style: .dark)
+        let blurEffect = UIBlurEffect.init(style: .light)
         let visualEffect = UIVisualEffectView.init(effect: blurEffect)
         let bluredView = UIVisualEffectView.init(effect: blurEffect)
         bluredView.contentView.addSubview(visualEffect)
 
         visualEffect.frame = UIScreen.main.bounds
         bluredView.frame = UIScreen.main.bounds
-
+        bluredView.layer.cornerRadius = 10.0
         view.insertSubview(bluredView, at: 0)
     }
     
@@ -75,7 +81,8 @@ class BottomSheetViewController: BaseViewController {
         super.viewDidLoad()
         configurationConstarint()
         presenter?.viewDidLoad()
-        view.backgroundColor = .green
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 10.0
         let gesture = UIPanGestureRecognizer.init(target: self, action: #selector(panGesture))
         view.addGestureRecognizer(gesture)
     }
@@ -87,14 +94,17 @@ class BottomSheetViewController: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        configurationIntialHeight()
+    }
+    
+    private func configurationIntialHeight() {
         UIView.animate(withDuration: 0.5) { [weak self] in
             let frame = self?.view.frame
             self?.view.frame = CGRect(x: 0, y: frame!.height - (self?.partialView ?? 0) , width: frame!.width, height: frame!.height)
         }
     }
     
-    func configurationConstarint() {
+    private func configurationConstarint() {
         tableView.snp.makeConstraints {
             $0.leading.bottom.trailing.equalToSuperview()
             $0.top.equalTo(21.0)
@@ -112,7 +122,6 @@ class BottomSheetViewController: BaseViewController {
     }
     
     @objc func panGesture(_ recognizer: UIPanGestureRecognizer) {
-        
         let translation = recognizer.translation(in: self.view)
         let velocity = recognizer.velocity(in: self.view)
         let y = self.view.frame.minY

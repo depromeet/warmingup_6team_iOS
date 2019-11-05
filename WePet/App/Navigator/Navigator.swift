@@ -20,15 +20,15 @@ enum TransitionType {
 
 enum ViewType {
     case home
-    case map(categories: [Category])
+    case map(categories: [Category], selectedCategory: Category)
     case spotDetail(spot: Spot, location: Location?)
 
     func instantiateViewController() -> UIViewController & Navigatable {
         switch self {
         case .home:
             return makeHomeViewController()
-        case .map(let categories):
-            return makeMapViewController(categories)
+        case .map(let categories, let selectedCategory):
+            return makeMapViewController(categories, selectedCategory)
         case .spotDetail(let spot, let location):
             return makeSpotDetailViewController(spot, location)
         }
@@ -47,12 +47,13 @@ extension ViewType {
         return view
     }
 
-    private func makeMapViewController(_ categories: [Category]) -> MapViewController {
+    private func makeMapViewController(_ categories: [Category], _ selectedCategory: Category) -> MapViewController {
         let view = MapViewController()
         let presenter = MapPresenter(
             view: view,
             mapService: type(of: self).mapService,
-            categories: categories
+            categories: categories,
+            selectedCategory: selectedCategory
         )
         view.presenter = presenter
         return view

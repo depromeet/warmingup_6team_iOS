@@ -256,8 +256,11 @@ extension HomeViewController {
     }
 
     @objc func gotoMap() {
-        guard let categories = presenter?.categories else { return }
-        navigator?.show(.map(categories: categories), transition: .push)
+        guard
+            let categories = presenter?.categories,
+            let selectedCategory = presenter?.selectedCategory
+        else { return }
+        navigator?.show(.map(categories: categories, selectedCategory: selectedCategory), transition: .push)
     }
 
     func showCategoryContainer() {
