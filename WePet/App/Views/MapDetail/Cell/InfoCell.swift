@@ -120,3 +120,11 @@ class InfoCell: BaseTableViewCell {
         sendEventToParent?()
     }
 }
+
+extension InfoCell {
+    func configure(spot: Spot?) {
+        callNumber.setTitle(spot?.phoneNumber, for: .normal)
+        callNumber.setTitle(spot?.phoneNumber, for: .highlighted)
+        timeContent.text = spot?.homePage
+    }
+}

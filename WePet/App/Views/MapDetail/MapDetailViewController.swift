@@ -14,7 +14,11 @@ protocol MapDetailViewControllerType: AnyObject {
 
 class MapDetailViewController: BaseViewController {
     
-    var presenter: MapDetailPresenterType?
+    var presenter: MapDetailPresenterType? {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     
     typealias listClosure = () -> Void
     var sendEventToParent: listClosure?
@@ -34,6 +38,8 @@ class MapDetailViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configurationConstarint()
+        view.layer.cornerRadius = 10.0
+        tableView.layer.cornerRadius = 10.0
     }
     
     func configurationConstarint() {
@@ -55,6 +61,7 @@ extension MapDetailViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "InfoCell", for: indexPath) as! InfoCell
+            cell.configure(spot: presenter?.spot)
             cell.sendEventToParent = {
                 self.sendEventToParent?()
             }

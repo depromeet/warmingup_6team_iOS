@@ -18,8 +18,9 @@ protocol MapViewControllerType: AnyObject {
 class MapViewController: BaseViewController {
     
     var presenter: MapPresenterType?
-    let bottomSheetViewController = BottomSheetViewController()
-    let mapDetailViewController = MapDetailViewController()
+    private let bottomSheetViewController = BottomSheetViewController()
+    private let mapDetailViewController = MapDetailViewController()
+    private var previousMarker: GMSMarker?
     
     private lazy var dropView: UIButton = {
         let button: UIButton = UIButton(type: .custom)
@@ -126,8 +127,7 @@ class MapViewController: BaseViewController {
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
         configurationConstarint()
         presenter?.didVisit(Location.startupHub)
-//        addBottomSheetView()
-//        addBottomInfoView()
+        configurationInitalView()
     }
     
     func configurationConstarint() {
@@ -173,15 +173,26 @@ class MapViewController: BaseViewController {
         }
     }
     
-    func addBottomInfoView() {
-        let spot: Spot = Spot()
+    // MARK: - Create BottomSheet && Info
+    private func configurationInitalView() {
+        bottomSheetViewController.view.alpha = 0.0
+        mapDetailViewController.view.alpha = 0.0
+        createInfoView()
+        createBottoSheet()
+    }
+    
+    private func createBottoSheet() {
+        addChild(bottomSheetViewController)
+        view.addSubview(bottomSheetViewController.view)
+        bottomSheetViewController.didMove(toParent: self)
         
-        let presenter = MapDetailPresenter(
-            view: mapDetailViewController,
-            spot: spot,
-            categories: []
-        )
-        mapDetailViewController.presenter = presenter
+        let height = view.frame.height
+        let width  = view.frame.width
+        bottomSheetViewController.view.frame = CGRect(x: 0, y: self.view.frame.maxY, width: width, height: height)
+        bottomSheetViewController.view.layer.cornerRadius = 10.0
+    }
+    
+    private func createInfoView() {
         addChild(mapDetailViewController)
         view.addSubview(mapDetailViewController.view)
         mapDetailViewController.didMove(toParent: self)
@@ -199,22 +210,29 @@ class MapViewController: BaseViewController {
         }
     }
     
-    func changeBottomSheet() {
-        view.subviews.forEach { view in
-            view.removeFromSuperview()
-        }
-        addBottomSheetView()
+    func changeInfoViewData(spot: Spot) {
+        bottomSheetViewController.view.alpha = 0.0
+        mapDetailViewController.view.alpha = 1.0
+        
+        let presenter = MapDetailPresenter(
+            view: mapDetailViewController,
+            spot: spot,
+            categories: []
+        )
+        mapDetailViewController.presenter = presenter
     }
     
-    func addBottomSheetView() {
+    func changeBottomSheet() {
+        mapDetailViewController.view.alpha = 0.0
+        bottomSheetViewController.view.alpha = 1.0
         let mapService = MapService(networking: MapNetworking())
-        // 1- Init bottomSheetVC
+         
         guard
             let spots = presenter?.spots,
             let categories = presenter?.categories
             else {
-            return
-        }
+                return
+            }
         let bottomPresenter = BottomSheetPresenter(
             view: bottomSheetViewController,
             mapService: mapService,
@@ -222,16 +240,6 @@ class MapViewController: BaseViewController {
             spots: spots
         )
         bottomSheetViewController.presenter = bottomPresenter
-        // 2- Add bottomSheetVC as a child view
-        addChild(bottomSheetViewController)
-        view.addSubview(bottomSheetViewController.view)
-        bottomSheetViewController.didMove(toParent: self)
-        
-        // 3- Adjust bottomSheet frame and initial position.
-        let height = view.frame.height
-        let width  = view.frame.width
-        bottomSheetViewController.view.frame = CGRect(x: 0, y: self.view.frame.maxY, width: width, height: height)
-        bottomSheetViewController.view.layer.cornerRadius = 10.0
     }
     
     @objc func pressedBackButton() {
@@ -260,25 +268,33 @@ class MapViewController: BaseViewController {
 }
 
 extension MapViewController: GMSMapViewDelegate {
-    func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
-        
-    }
     
     func mapView(_ mapView: GMSMapView, willMove gesture: Bool) {
         // Move
-        
-    }
-    
-    func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
-        
+        if previousMarker != nil {
+            previousMarker?.icon =  UIImage(named: "marker")
+            previousMarker = nil
+        }
     }
     
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
+        mapView.camera = GMSCameraPosition.camera(withTarget: marker.position, zoom: mapView.camera.zoom)
         marker.icon = UIImage(named: "active_marker")
+        if previousMarker != nil {
+            previousMarker?.icon =  UIImage(named: "marker")
+        }
+        previousMarker = marker
+        guard let spots = presenter?.spots else {
+            return true
+        }
+        
+        for spot in spots {
+            if spot.latitude == marker.position.latitude && spot.longitude == marker.position.longitude {
+                changeInfoViewData(spot: spot)
+                break
+            }
+        }
         return true
-    }
-    
-    func mapViewDidFinishTileRendering(_ mapView: GMSMapView) {
     }
 }
 
@@ -300,7 +316,7 @@ extension MapViewController: CLLocationManagerDelegate {
 
 extension MapViewController: MapViewControllerType {
     func reload() {
-        addBottomSheetView()
+        changeBottomSheet()
         configurationMapmarker()
     }
     
