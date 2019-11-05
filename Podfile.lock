@@ -1,5 +1,6 @@
 PODS:
   - Alamofire (4.9.1)
+  - DropDown (2.3.13)
   - GoogleMaps (3.6.0):
     - GoogleMaps/Maps (= 3.6.0)
   - GoogleMaps/Base (3.6.0)
@@ -19,6 +20,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire
+  - DropDown
   - GoogleMaps
   - GooglePlaces
   - Moya
@@ -29,6 +31,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Alamofire
+    - DropDown
     - GoogleMaps
     - GooglePlaces
     - Moya
@@ -39,6 +42,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  DropDown: 8a2116376c1981888557f72ec2ffc9a5e0e456ec
   GoogleMaps: 82f8fe307193bb4de6ef6bf9e88f1d624b718f9d
   GooglePlaces: 1b9d29cf3e164903d873600f511f42acdfe85294
   Moya: f4a4b80ff2f8a4ffc208dfb31cd91636622fee6e
@@ -47,6 +51,6 @@ SPEC CHECKSUMS:
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SwiftyBeaver: 3d3e93a12d648bd400b6f2948a7ef128b5b183c7
 
-PODFILE CHECKSUM: 2acc0bc14ccfe9dd76dd98bf9d0d8c6567332793
+PODFILE CHECKSUM: 299816707c872209bfe9f05e88f7ecfe6a99b150
 
 COCOAPODS: 1.8.4

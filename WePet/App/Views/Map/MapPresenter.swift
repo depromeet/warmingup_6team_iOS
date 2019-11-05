@@ -8,6 +8,12 @@
 
 import Foundation
 
+enum Distance: Int {
+    case nearby = 300
+    case middle = 500
+    case far = 1000
+}
+
 protocol MapPresenterType {
     var spots: [Spot] { get }
     var categories: [Category] { get }
@@ -15,6 +21,7 @@ protocol MapPresenterType {
     func viewDidLoad()
     func didVisit(_ location: Location)
     func didSelectCategory(_ category: Category)
+    func didSelectDistance(_ index: Int)
 }
 
 final class MapPresenter: MapPresenterType {
@@ -25,6 +32,7 @@ final class MapPresenter: MapPresenterType {
     private(set) var spots: [Spot] = []
     private(set) var currentLocation: Location?
     private var isLoaded = false
+    private var slsectedDistance: Distance = .nearby
 
     init(
         view: MapViewControllerType,
@@ -65,13 +73,27 @@ extension MapPresenter {
     func didSelectCategory(_ category: Category) {
         selectedCategory = category
         fetchSpots()
-     }
+    }
+    
+    func didSelectDistance(_ index: Int) {
+        switch index {
+        case 0:
+            slsectedDistance = .nearby
+        case 1:
+            slsectedDistance = .middle
+        case 2:
+            slsectedDistance = .far
+        default:
+            slsectedDistance = .nearby
+        }
+        fetchSpots()
+    }
 }
 
 private extension MapPresenter {
     func fetchSpots() {
         guard let location = currentLocation else { return }
-        let spotParam = (distance: 3000, size: 20, categoryId: selectedCategory.id)
+        let spotParam = (distance: slsectedDistance.rawValue, size: 20, categoryId: selectedCategory.id)
         mapService.getSpots(location: location, spotParam: spotParam) { [weak self] result in
             switch result {
             case .success(let spots):

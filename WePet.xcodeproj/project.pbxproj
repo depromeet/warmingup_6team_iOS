@@ -53,6 +53,7 @@
 		EE4B79CA2369881000D1D29D /* BottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4B79C92369881000D1D29D /* BottomSheetViewController.swift */; };
 		EE4B79CC236997E600D1D29D /* BottomSheetPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4B79CB236997E600D1D29D /* BottomSheetPresenter.swift */; };
 		EE7B3F9F2370246200D41042 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B3F9E2370246200D41042 /* CategoryCell.swift */; };
+		EEA97D4F2371E188003A065F /* String+Width.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA97D4E2371E188003A065F /* String+Width.swift */; };
 		EEEA7C6F236D5B46008159BA /* BottomImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEEA7C6E236D5B46008159BA /* BottomImageButton.swift */; };
 		EEEA7C74236D5C88008159BA /* TapAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEEA7C73236D5C88008159BA /* TapAnimation.swift */; };
 /* End PBXBuildFile section */
@@ -110,6 +111,7 @@
 		EE4B79C92369881000D1D29D /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetViewController.swift; sourceTree = "<group>"; };
 		EE4B79CB236997E600D1D29D /* BottomSheetPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetPresenter.swift; sourceTree = "<group>"; };
 		EE7B3F9E2370246200D41042 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
+		EEA97D4E2371E188003A065F /* String+Width.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Width.swift"; sourceTree = "<group>"; };
 		EEEA7C6E236D5B46008159BA /* BottomImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomImageButton.swift; sourceTree = "<group>"; };
 		EEEA7C73236D5C88008159BA /* TapAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapAnimation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -170,6 +172,7 @@
 			children = (
 				2D4D61D0236429EB0090DB52 /* Int+Additions.swift */,
 				2DD4A02E236D6AB0002BF6B5 /* UIViewController+Additions.swift */,
+				EEA97D4E2371E188003A065F /* String+Width.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -623,6 +626,7 @@
 				EE7B3F9F2370246200D41042 /* CategoryCell.swift in Sources */,
 				2D96013A2354C34700B76984 /* WeatherService.swift in Sources */,
 				2D9601352354C1E400B76984 /* MapAPI.swift in Sources */,
+				EEA97D4F2371E188003A065F /* String+Width.swift in Sources */,
 				2D4D61E223646BD00090DB52 /* SpotlistViewController.swift in Sources */,
 				2D89743023708961002F319F /* MockWeatherService.swift in Sources */,
 				2D89742B237072CD002F319F /* Navigator.swift in Sources */,

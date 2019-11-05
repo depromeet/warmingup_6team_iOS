@@ -10,6 +10,7 @@ import UIKit
 import GoogleMaps
 import SnapKit
 import CoreLocation
+import DropDown
 
 protocol MapViewControllerType: AnyObject {
     func reload()
@@ -23,7 +24,7 @@ class MapViewController: BaseViewController {
     private var previousMarker: GMSMarker?
     private let locationManager = CLLocationManager()
     
-    private lazy var dropView: UIButton = {
+    private lazy var dropButton: UIButton = {
         let button: UIButton = UIButton(type: .custom)
         button.setImage(UIImage(named: "bottomArrow"), for: .normal)
         button.setImage(UIImage(named: "bottomArrow"), for: .highlighted)
@@ -39,14 +40,26 @@ class MapViewController: BaseViewController {
         return button
     }()
     
+    private lazy var dropDown: DropDown = {
+        let dropDown: DropDown = DropDown()
+        dropDown.anchorView = dropButton
+        dropDown.dataSource = ["300m","500m","1km"]
+        dropDown.selectionAction = { [weak self] (index, item) in
+            self?.presenter?.didSelectDistance(index)
+            self?.dropButton.setTitle(item, for: .normal)
+            self?.dropButton.setTitle(item, for: .highlighted)
+        }
+        view.addSubview(dropDown)
+        return dropDown
+    }()
+    
     private var collectionLayout: UICollectionViewFlowLayout = {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 7.0
-        layout.minimumInteritemSpacing = 0.0
+        layout.minimumLineSpacing = 0.0
+        layout.minimumInteritemSpacing = 7.0
         layout.headerReferenceSize = .zero
         layout.footerReferenceSize = .zero
         layout.scrollDirection = .horizontal
-        layout.estimatedItemSize = CGSize(width: 200, height: 35)
         return layout
     }()
     
@@ -140,7 +153,7 @@ class MapViewController: BaseViewController {
             $0.top.equalToSuperview().offset(50.0)
         }
         
-        dropView.snp.makeConstraints {
+        dropButton.snp.makeConstraints {
             $0.leading.equalTo(backButton.snp.trailing).offset(16.0)
             $0.centerY.equalTo(backButton)
             $0.width.equalTo(79.0)
@@ -148,9 +161,9 @@ class MapViewController: BaseViewController {
         }
         
         collectionView.snp.makeConstraints {
-            $0.leading.equalTo(dropView.snp.trailing).offset(24.0)
+            $0.leading.equalTo(dropButton.snp.trailing).offset(24.0)
             $0.trailing.equalToSuperview()
-            $0.centerY.equalTo(dropView)
+            $0.centerY.equalTo(dropButton)
             $0.height.equalTo(35.0)
         }
         
@@ -263,6 +276,7 @@ class MapViewController: BaseViewController {
     }
     
     @objc func pressedDropButton() {
+        dropDown.show()
     }
     
     func startMonitoringLocation() {
@@ -379,5 +393,15 @@ extension MapViewController: UICollectionViewDelegateFlowLayout, UICollectionVie
             return
         }
         presenter?.didSelectCategory(categories[indexPath.row])
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                           layout collectionViewLayout: UICollectionViewLayout,
+                           sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let name = presenter?.categories[indexPath.row].displayName else {
+            return .zero
+        }
+        let contentWidth = name.width(withConstrainedHeight: 35.0)
+        return CGSize(width: contentWidth + 30.0, height: 35.0)
     }
 }
