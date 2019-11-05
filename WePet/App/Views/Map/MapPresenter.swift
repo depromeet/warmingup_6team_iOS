@@ -14,6 +14,7 @@ protocol MapPresenterType {
     var selectedCategory: Category { get }
     func viewDidLoad()
     func didVisit(_ location: Location)
+    func didSelectCategory(_ category: Category)
 }
 
 final class MapPresenter: MapPresenterType {
@@ -60,6 +61,11 @@ extension MapPresenter {
         self.currentLocation = location
         fetchSpots()
     }
+    
+    func didSelectCategory(_ category: Category) {
+        selectedCategory = category
+        fetchSpots()
+     }
 }
 
 private extension MapPresenter {

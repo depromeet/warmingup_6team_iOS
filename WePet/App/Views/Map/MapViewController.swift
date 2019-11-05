@@ -316,6 +316,7 @@ extension MapViewController: CLLocationManagerDelegate {
 
 extension MapViewController: MapViewControllerType {
     func reload() {
+        collectionView.reloadData()
         changeBottomSheet()
         configurationMapmarker()
     }
@@ -361,5 +362,10 @@ extension MapViewController: UICollectionViewDelegateFlowLayout, UICollectionVie
         return cell
     }
     
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let categories = presenter?.categories else {
+            return
+        }
+        presenter?.didSelectCategory(categories[indexPath.row])
+    }
 }
