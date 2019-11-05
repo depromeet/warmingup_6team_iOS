@@ -55,12 +55,11 @@ class MapViewController: BaseViewController {
     
     private var collectionLayout: UICollectionViewFlowLayout = {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 7.0
-        layout.minimumInteritemSpacing = 0.0
+        layout.minimumLineSpacing = 0.0
+        layout.minimumInteritemSpacing = 7.0
         layout.headerReferenceSize = .zero
         layout.footerReferenceSize = .zero
         layout.scrollDirection = .horizontal
-        layout.estimatedItemSize = CGSize(width: 200, height: 35)
         return layout
     }()
     
@@ -394,5 +393,15 @@ extension MapViewController: UICollectionViewDelegateFlowLayout, UICollectionVie
             return
         }
         presenter?.didSelectCategory(categories[indexPath.row])
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                           layout collectionViewLayout: UICollectionViewLayout,
+                           sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let name = presenter?.categories[indexPath.row].displayName else {
+            return .zero
+        }
+        let contentWidth = name.width(withConstrainedHeight: 35.0)
+        return CGSize(width: contentWidth + 30.0, height: 35.0)
     }
 }
