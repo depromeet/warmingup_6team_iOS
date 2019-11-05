@@ -11,6 +11,7 @@ import UIKit
 final class ApplicationCoordinator {
     private let window: UIWindow
     private let navigationController: UINavigationController
+    private let navigator: Navigator
 
     init(
         window: UIWindow,
@@ -18,19 +19,13 @@ final class ApplicationCoordinator {
     ) {
         self.window = window
         self.navigationController = navigationController
+        self.navigator = Navigator(
+            window: window,
+            navigationController: navigationController
+        )
     }
 
     func start() {
-        let mapService = MapService(networking: MapNetworking())
-        let weatherService = WeatherService(networking: WeatherNetworking())
-        let view = HomeViewController()
-        let presenter = HomePresenter(
-            view: view,
-            mapService: mapService,
-            weatherService: weatherService
-        )
-        view.presenter = presenter
-        navigationController.setViewControllers([view], animated: true)
-        window.rootViewController = navigationController
+        navigator.show(.home, transition: .root)
     }
 }

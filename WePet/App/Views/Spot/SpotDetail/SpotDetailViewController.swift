@@ -65,7 +65,7 @@ final class SpotDetailViewController: BaseViewController, SpotDetailViewControll
     }
 
     @IBAction func didTapBack(_ sender: Any) {
-        navigationController?.popViewController(animated: true)
+        navigator?.pop()
     }
 
     @IBAction func didTapPhoneNumber(_ sender: Any) {
