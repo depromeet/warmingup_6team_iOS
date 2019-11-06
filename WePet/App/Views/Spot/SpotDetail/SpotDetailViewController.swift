@@ -43,10 +43,12 @@ final class SpotDetailViewController: BaseViewController, SpotDetailViewControll
             self?.thumbnailView.image = image ?? UIImage(named: "sample")
         }
         nameLabel.text = spot.name
-        distanceLabel.text = "\(spot.distance ?? 100)m"
         addressLabel.text = spot.address
         phoneNumberLabel.text = spot.phoneNumber
         homePageLabel.text = spot.homePage
+        if let distance = spot.distance {
+            distanceLabel.text = "\(distance)m"
+        }
         UIView.animate(withDuration: 0.2) {
             self.addressStackView.isHidden = spot.address == nil
             self.phoneNumberStackView.isHidden = spot.phoneNumber == nil

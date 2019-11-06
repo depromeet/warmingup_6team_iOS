@@ -21,6 +21,7 @@ final class MapService: MapServiceType {
     private let networking: MapNetworking
 
     private(set) var deviceId: String? = UIDevice.current.identifierForVendor?.uuidString
+    private var recentLocation: Location?
 
     init(networking: MapNetworking) {
         self.networking = networking
@@ -31,8 +32,8 @@ final class MapService: MapServiceType {
     }
 
     func getSpots(location: Location, spotParam: SpotParam, _ completion: @escaping (Result<[Spot], WepetError>) -> Void) {
-        guard let latitude = location.latitude,
-            let longitude = location.longitude,
+        guard let latitude = location.latitude ?? recentLocation?.latitude,
+            let longitude = location.longitude ?? recentLocation?.longitude,
             let deviceId = self.deviceId else {
                 completion(.failure(.requestFailed))
                 return
@@ -45,9 +46,10 @@ final class MapService: MapServiceType {
                 spotParam: spotParam,
                 deviceId: deviceId
             )
-        ) { (result: (Result<Content<[Spot]>, WepetError>)) -> Void in
+        ) { [weak self] (result: (Result<Content<[Spot]>, WepetError>)) -> Void in
             switch result {
             case .success(let content):
+                self?.recentLocation = Location(latitude: latitude, longitude: longitude)
                 completion(.success((content.content ?? [])))
             case .failure(let error):
                 completion(.failure(error))
@@ -56,8 +58,8 @@ final class MapService: MapServiceType {
     }
 
     func getSpot(placeId: String?, location: Location?, _ completion: @escaping (Result<Spot, WepetError>) -> Void) {
-        guard let latitude = location?.latitude,
-            let longitude = location?.longitude,
+        guard let latitude = location?.latitude ?? recentLocation?.latitude,
+            let longitude = location?.longitude ?? recentLocation?.longitude,
             let placeId = placeId,
             let deviceId = self.deviceId else {
                 completion(.failure(.requestFailed))

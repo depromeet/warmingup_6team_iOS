@@ -210,9 +210,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-
-        guard let spot = presenter?.spots[indexPath.row] else { return }
-        navigator?.show(.spotDetail(spot: spot, location: presenter?.currentLocation), transition: .push)
+        gotoMap()
     }
 }
 

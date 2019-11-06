@@ -225,8 +225,8 @@
 			isa = PBXGroup;
 			children = (
 				EE7B3F9D2370243700D41042 /* Cell */,
-				2D7FA2CE236422ED00E7D3BD /* MapPresenter.swift */,
 				2D7FA2C22364207A00E7D3BD /* MapViewController.swift */,
+				2D7FA2CE236422ED00E7D3BD /* MapPresenter.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -774,6 +774,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 7KW522KWZF;
 				INFOPLIST_FILE = "$(SRCROOT)/WePet/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -797,6 +798,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 7KW522KWZF;
 				INFOPLIST_FILE = "$(SRCROOT)/WePet/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -880,6 +882,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 7KW522KWZF;
 				INFOPLIST_FILE = "$(SRCROOT)/WePet/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -957,6 +960,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 7KW522KWZF;
 				INFOPLIST_FILE = "$(SRCROOT)/WePet/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (

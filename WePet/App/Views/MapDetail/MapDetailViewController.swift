@@ -30,6 +30,7 @@ class MapDetailViewController: BaseViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
+        tableView.isScrollEnabled = false
         tableView.estimatedRowHeight = UITableView.automaticDimension
         view.addSubview(tableView)
         return tableView
@@ -71,6 +72,9 @@ extension MapDetailViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+
+        guard let spot = presenter?.spot else { return }
+        navigator?.show(.spotDetail(spot: spot, location: nil), transition: .push)
     }
 
 }

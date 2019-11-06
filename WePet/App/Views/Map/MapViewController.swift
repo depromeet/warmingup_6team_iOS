@@ -72,7 +72,7 @@ class MapViewController: BaseViewController {
         collectionView.scrollsToTop = false
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.isPagingEnabled = true
+        collectionView.isPagingEnabled = false
         collectionView.contentInset = .zero
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
@@ -195,6 +195,7 @@ class MapViewController: BaseViewController {
     }
     
     private func createBottoSheet() {
+        bottomSheetViewController.navigator = navigator
         addChild(bottomSheetViewController)
         view.addSubview(bottomSheetViewController.view)
         bottomSheetViewController.didMove(toParent: self)
@@ -206,6 +207,7 @@ class MapViewController: BaseViewController {
     }
     
     private func createInfoView() {
+        mapDetailViewController.navigator = navigator
         addChild(mapDetailViewController)
         view.addSubview(mapDetailViewController.view)
         mapDetailViewController.didMove(toParent: self)
