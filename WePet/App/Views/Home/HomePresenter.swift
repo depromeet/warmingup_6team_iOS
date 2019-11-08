@@ -86,7 +86,7 @@ private extension HomePresenter {
     }
 
     func getRecommendCategory() -> Category? {
-        return categories.first(where: { $0.type == weather?.type?.recommendCategory })
+        return categories.first(where: { $0.type == weather?.recommendCategory })
             ?? categories.first
     }
 }

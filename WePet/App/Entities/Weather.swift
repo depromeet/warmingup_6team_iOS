@@ -26,6 +26,25 @@ struct Weather: Codable {
         }
         temperature = try values.decodeIfPresent(String.self, forKey: .temperature)
     }
+
+    var recommendCategory: CategoryType {
+        guard let temperature = Double(self.temperature ?? "") else { return .cafe }
+        switch (type, temperature) {
+        case (.thunderstorm, _): return .mall
+        case (.drizzle, _): return .mall
+        case (.rain, _): return .mall
+        case (.snow, 1...Double(Int.max)): return .cafe
+        case (.snow, _): return .mall
+        case (.mist, _): return .cafe
+        case (.smoke, _): return .cafe
+        case (.clear, 30...Double(Int.max)): return .restaurant
+        case (.clear, _): return .park
+        case (.clouds, 15...Double(Int.max)): return .park
+        case (.clouds, _): return .cafe
+        default:
+            return .cafe
+        }
+    }
 }
 
 enum WeatherType: String, Codable {
@@ -51,42 +70,16 @@ enum WeatherType: String, Codable {
         }
     }
 
-    var recommendCategory: CategoryType {
-        switch self {
-        case .thunderstorm: return .cafe
-        case .drizzle: return .cafe
-        case .rain: return .cafe
-        case .snow: return .cafe
-        case .mist: return .cafe
-        case .smoke: return .cafe
-        case .clear: return .park
-        case .clouds: return .cafe
-        }
-    }
-
-    var introText: String {
-        switch self {
-        case .thunderstorm: return "조금 추운 날씨예요\n포근한 펫카페 어떠세요?"
-        case .drizzle: return "조금 추운 날씨예요\n포근한 펫카페 어떠세요?"
-        case .rain: return "조금 추운 날씨예요\n포근한 펫카페 어떠세요?"
-        case .snow: return "조금 추운 날씨예요\n포근한 펫카페 어떠세요?"
-        case .mist: return "조금 추운 날씨예요\n포근한 펫카페 어떠세요?"
-        case .smoke: return "조금 추운 날씨예요\n포근한 펫카페 어떠세요?"
-        case .clear: return "화창한 날씨에\n산책을 나가보는 건 어떨까요?"
-        case .clouds: return "조금 추운 날씨예요\n포근한 펫카페 어떠세요?"
-        }
-    }
-
     var icon: UIImage? {
         switch self {
-        case .thunderstorm: return UIImage(named: "ic_cloud")
-        case .drizzle: return UIImage(named: "ic_cloud")
-        case .rain: return UIImage(named: "ic_cloud")
-        case .snow: return UIImage(named: "ic_cloud")
-        case .mist: return UIImage(named: "ic_cloud")
-        case .smoke: return UIImage(named: "ic_cloud")
-        case .clear: return UIImage(named: "ic_cloud")
-        case .clouds: return UIImage(named: "ic_cloud")
+        case .thunderstorm: return UIImage(named: "ic_rain")
+        case .drizzle: return UIImage(named: "ic_rain")
+        case .rain: return UIImage(named: "ic_rain")
+        case .snow: return UIImage(named: "ic_snow")
+        case .mist: return UIImage(named: "ic_mist")
+        case .smoke: return UIImage(named: "ic_mist")
+        case .clear: return UIImage(named: "ic_clear")
+        case .clouds: return UIImage(named: "ic_clouds")
         }
     }
 }

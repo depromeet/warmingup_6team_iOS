@@ -177,7 +177,7 @@ extension HomeViewController: HomeViewControllerType {
     }
 
     func configureWeather(_ weather: Weather) {
-        introTextLabel.text = weather.type?.introText
+        introTextLabel.text = weather.recommendCategory.introText
         weatherView.configure(weather: weather)
         showWeatherView()
     }
