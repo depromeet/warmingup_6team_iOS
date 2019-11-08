@@ -24,9 +24,10 @@ final class HomeViewController: BaseViewController {
 
     private struct Metric {
         static let stackLeading = 32.f
-        static let stackTop = 80.f
+        static let stackTop = 60.f
         static let stackSpacing = 11.f
         static let logoHeight = 23.f
+        static let categoryTop = 28.f
         static let categoryLeadingTrailing = 30.f
         static let categoryTableHeight = 270.f
         static let categorySpacing = 16.f
@@ -42,11 +43,14 @@ final class HomeViewController: BaseViewController {
 
     // MARK: - Subviews
 
+    private var scrollView: UIScrollView!
+    private var containerStackView: UIStackView!
     private var topStackView: UIStackView!
     private var logoImageView: UIImageView!
     private var spaceView: UIView!
     private var introTextLabel: UILabel!
     private var weatherView: WeatherView!
+    private var illustrationView: UIImageView!
     private var categoryContainerView: UIStackView!
     private var categoryView: CategoryTabView!
     private var tableView: UITableView!
@@ -64,12 +68,22 @@ final class HomeViewController: BaseViewController {
     }
 
     override func setupSubviews() {
+        scrollView = UIScrollView().also {
+            $0.showsVerticalScrollIndicator = false
+            view.addSubview($0)
+        }
+        containerStackView = UIStackView().also {
+            $0.axis = .vertical
+            $0.alignment = .fill
+            $0.distribution = .fill
+            scrollView.addSubview($0)
+        }
         topStackView = UIStackView().also {
             $0.axis = .vertical
             $0.alignment = .leading
             $0.distribution = .fill
             $0.spacing = Metric.stackSpacing
-            view.addSubview($0)
+            containerStackView.addSubview($0)
         }
         logoImageView = UIImageView().also {
             $0.image = UIImage(named: "ic_logo")
@@ -82,23 +96,29 @@ final class HomeViewController: BaseViewController {
             $0.alpha = 0
             $0.textColor = UIColor(named: "black_#242424")
             $0.textAlignment = .left
+            $0.lineBreakMode = .byCharWrapping
             $0.numberOfLines = 0
             $0.font = Font.intro
-            $0.transform = CGAffineTransform(translationX: 0, y: 20)
+            $0.transform = CGAffineTransform(translationX: 0, y: 10)
             topStackView.addArrangedSubview($0)
         }
         weatherView = WeatherView().also {
             $0.alpha = 0
-            $0.transform = CGAffineTransform(translationX: 0, y: 40)
+            $0.transform = CGAffineTransform(translationX: 0, y: 30)
             topStackView.addArrangedSubview($0)
+        }
+        illustrationView = UIImageView().also {
+            $0.alpha = 0
+            $0.transform = CGAffineTransform(translationX: 10, y: 0)
+            containerStackView.addSubview($0)
         }
         categoryContainerView = UIStackView().also {
             $0.alpha = 0
             $0.axis = .vertical
-            $0.alignment = .leading
+            $0.alignment = .fill
             $0.distribution = .fill
             $0.spacing = Metric.categorySpacing
-            view.addSubview($0)
+            containerStackView.addSubview($0)
         }
         categoryView = CategoryTabView().also {
             $0.delegate = self
@@ -124,14 +144,21 @@ final class HomeViewController: BaseViewController {
             $0.setTitle("지도로 보기", for: .normal)
             $0.setTitleColor(UIColor(named: "white_#EFEFEF"), for: .normal)
             $0.addTarget(self, action: #selector(gotoMap), for: .touchUpInside)
-            view.addSubview($0)
+            containerStackView.addSubview($0)
         }
     }
 
     override func setupConstraints() {
+        scrollView.snp.makeConstraints {
+            $0.leading.top.trailing.bottom.equalToSuperview()
+        }
+        containerStackView.snp.makeConstraints {
+            $0.leading.top.trailing.bottom.width.equalToSuperview()
+        }
         topStackView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(Metric.stackTop)
             $0.leading.equalToSuperview().offset(Metric.stackLeading)
+            $0.trailing.equalToSuperview().offset(-Metric.stackLeading)
         }
         logoImageView.snp.makeConstraints {
             $0.height.equalTo(Metric.logoHeight)
@@ -139,7 +166,12 @@ final class HomeViewController: BaseViewController {
         spaceView.snp.makeConstraints {
             $0.height.equalTo(17)
         }
+        illustrationView.snp.makeConstraints {
+            $0.top.equalTo(weatherView.snp.bottom)
+            $0.trailing.equalToSuperview().offset(-Metric.stackLeading)
+        }
         categoryContainerView.snp.makeConstraints {
+            $0.top.equalTo(illustrationView.snp.bottom).offset(Metric.categoryTop)
             $0.leading.equalToSuperview().offset(Metric.categoryLeadingTrailing)
             $0.trailing.equalToSuperview().offset(-Metric.categoryLeadingTrailing)
             $0.bottom.equalToSuperview().offset(-Metric.categoryBottom)
@@ -177,8 +209,9 @@ extension HomeViewController: HomeViewControllerType {
     }
 
     func configureWeather(_ weather: Weather) {
-        introTextLabel.text = weather.type?.introText
+        introTextLabel.text = weather.recommendCategory.introText
         weatherView.configure(weather: weather)
+        illustrationView.image = weather.recommendCategory.image
         showWeatherView()
     }
 }
@@ -280,6 +313,8 @@ extension HomeViewController {
                 self.introTextLabel.alpha = 1
                 self.weatherView.transform = .identity
                 self.weatherView.alpha = 1
+                self.illustrationView.transform = .identity
+                self.illustrationView.alpha = 1
             }
         )
     }
