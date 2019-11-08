@@ -30,6 +30,7 @@ final class CategoryTabView: BaseView {
 
     // MARK: - Subviews
 
+    private var scrollView: UIScrollView!
     private var contentStackView: UIStackView!
     private var buttons: [UIButton]!
     private var underlineView: UIView!
@@ -38,22 +39,30 @@ final class CategoryTabView: BaseView {
     var delegate: CategoryTabDelegate?
 
     override func setupSubviews() {
-        contentStackView = UIStackView().also {
-            $0.axis = .horizontal
-            $0.alignment = .top
-            $0.distribution = .fill
-            $0.spacing = Metric.spacing
+        scrollView = UIScrollView().also {
+            $0.showsHorizontalScrollIndicator = false
             addSubview($0)
         }
+        contentStackView = UIStackView().also {
+            $0.axis = .horizontal
+            $0.alignment = .fill
+            $0.distribution = .fill
+            $0.spacing = Metric.spacing
+            scrollView.addSubview($0)
+        }
         underlineView = UIView().also {
-            addSubview($0)
+            scrollView.addSubview($0)
         }
     }
 
     override func setupConstraints() {
-        contentStackView.snp.makeConstraints {
+        scrollView.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(8)
-            $0.top.trailing.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(-8)
+            $0.top.bottom.equalToSuperview()
+        }
+        contentStackView.snp.makeConstraints {
+            $0.leading.top.trailing.bottom.height.equalToSuperview()
         }
         underlineView.snp.makeConstraints {
             $0.height.equalTo(Metric.underlineHeight)
